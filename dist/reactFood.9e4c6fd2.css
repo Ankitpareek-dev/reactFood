@@ -20,4 +20,33 @@
   margin: 10px;
   padding: 10px;
 }
+
+.search {
+  width: 100px;
+  height: 2%0px;
+  border: 1px solid #000;
+  margin: 10px 0;
+}
+
+.res-container {
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.res-card {
+  background-color: #f0f0f0;
+  width: 200px;
+  height: auto;
+  margin: 10px;
+  padding: 5px;
+}
+
+.res-card:hover {
+  border: 1px solid #000;
+}
+
+.res-logo {
+  border: 1px solid #000;
+  width: 100%;
+}
 /*# sourceMappingURL=reactFood.9e4c6fd2.css.map */
