@@ -1,0 +1,23 @@
+.header {
+  border: 1px solid #000;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  display: flex;
+}
+
+.logo {
+  width: 70px;
+}
+
+.nav-items > ul {
+  padding: 0 20px;
+  list-style-type: none;
+  display: flex;
+}
+
+.nav-items > ul > li {
+  margin: 10px;
+  padding: 10px;
+}
+/*# sourceMappingURL=reactFood.9e4c6fd2.css.map */
