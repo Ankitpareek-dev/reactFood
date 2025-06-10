@@ -676,6 +676,7 @@ $parcel$ReactRefreshHelpers$5fe5.prelude(module);
 try {
 // import React from "react";
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _client = require("react-dom/client");
 var _clientDefault = parcelHelpers.interopDefault(_client);
@@ -749,50 +750,179 @@ const Header = ()=>{
     }, undefined);
 };
 _c = Header;
-const RestaurentCard = ()=>{
+const resList = [
+    {
+        id: 0,
+        name: "Spice Villa",
+        cuisine: [
+            "North Indian",
+            "Chinese"
+        ],
+        avgRating: 4.5,
+        costForTwo: 400,
+        deliveryTime: "30-40 mins",
+        imageId: "sample"
+    },
+    {
+        id: 1,
+        name: "Burger Nation",
+        cuisine: [
+            "American",
+            "Fast Food"
+        ],
+        avgRating: 4.2,
+        costForTwo: 300,
+        deliveryTime: "20-30 mins",
+        imageId: "food/burger"
+    },
+    {
+        id: 2,
+        name: "Tandoori Nights",
+        cuisine: [
+            "Mughlai",
+            "Barbecue"
+        ],
+        avgRating: 4.7,
+        costForTwo: 600,
+        deliveryTime: "40-50 mins",
+        imageId: "food/chicken"
+    },
+    {
+        id: 3,
+        name: "Green Leaf",
+        cuisine: [
+            "Vegan",
+            "Salads"
+        ],
+        avgRating: 4.3,
+        costForTwo: 350,
+        deliveryTime: "25-35 mins",
+        imageId: "food/salad"
+    },
+    {
+        id: 4,
+        name: "Pizza Mania",
+        cuisine: [
+            "Italian",
+            "Pizza"
+        ],
+        avgRating: 4.1,
+        costForTwo: 500,
+        deliveryTime: "30-45 mins",
+        imageId: "food/pizza"
+    },
+    {
+        id: 5,
+        name: "Sushi Central",
+        cuisine: [
+            "Japanese"
+        ],
+        avgRating: 4.6,
+        costForTwo: 700,
+        deliveryTime: "45-55 mins",
+        imageId: "food/sushi"
+    },
+    {
+        id: 6,
+        name: "The Dosa House",
+        cuisine: [
+            "South Indian"
+        ],
+        avgRating: 4.4,
+        costForTwo: 250,
+        deliveryTime: "20-25 mins",
+        imageId: "food/dosa"
+    },
+    {
+        id: 7,
+        name: "Wrap & Roll",
+        cuisine: [
+            "Fast Food",
+            "Snacks"
+        ],
+        avgRating: 4.0,
+        costForTwo: 200,
+        deliveryTime: "15-20 mins",
+        imageId: "food/wrap"
+    },
+    {
+        id: 8,
+        name: "Biryani Express",
+        cuisine: [
+            "Hyderabadi",
+            "Biryani"
+        ],
+        avgRating: 4.8,
+        costForTwo: 450,
+        deliveryTime: "35-45 mins",
+        imageId: "food/biryani"
+    },
+    {
+        id: 9,
+        name: "Chaat Junction",
+        cuisine: [
+            "Street Food",
+            "Chaat"
+        ],
+        avgRating: 4.1,
+        costForTwo: 180,
+        deliveryTime: "10-15 mins",
+        imageId: "food/chat"
+    }
+];
+exports.default = resList;
+const RestaurentCard = (props)=>{
+    const { resData } = props;
+    const { name, cuisine, stars, deliveryTime, imageId } = resData;
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         className: "res-card",
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("img", {
                 className: "res-logo",
-                src: "https://png.pngtree.com/png-vector/20220623/ourmid/pngtree-food-logo-png-image_5296974.png"
+                src: `https://res.cloudinary.com/demo/image/upload/${imageId}.jpg`
             }, void 0, false, {
                 fileName: "app.js",
-                lineNumber: 29,
+                lineNumber: 126,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h3", {
-                children: "Generic resturent"
+                children: name
             }, void 0, false, {
                 fileName: "app.js",
-                lineNumber: 33,
+                lineNumber: 130,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h4", {
-                children: "Biryani"
+                children: cuisine
             }, void 0, false, {
                 fileName: "app.js",
-                lineNumber: 34,
+                lineNumber: 131,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h4", {
-                children: "4.4 stars"
-            }, void 0, false, {
+                children: [
+                    stars,
+                    " \u2B50"
+                ]
+            }, void 0, true, {
                 fileName: "app.js",
-                lineNumber: 35,
+                lineNumber: 132,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h4", {
-                children: "38 minutes"
-            }, void 0, false, {
+                children: [
+                    deliveryTime,
+                    " minutes"
+                ]
+            }, void 0, true, {
                 fileName: "app.js",
-                lineNumber: 36,
+                lineNumber: 133,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "app.js",
-        lineNumber: 28,
+        lineNumber: 125,
         columnNumber: 5
     }, undefined);
 };
@@ -806,62 +936,27 @@ const Body = ()=>{
                 children: "Search"
             }, void 0, false, {
                 fileName: "app.js",
-                lineNumber: 43,
+                lineNumber: 140,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                 className: "res-container",
-                children: [
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(RestaurentCard, {}, void 0, false, {
+                children: resList.map((restaurent)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(RestaurentCard, {
+                        resData: restaurent
+                    }, restaurent.id, false, {
                         fileName: "app.js",
-                        lineNumber: 45,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(RestaurentCard, {}, void 0, false, {
-                        fileName: "app.js",
-                        lineNumber: 46,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(RestaurentCard, {}, void 0, false, {
-                        fileName: "app.js",
-                        lineNumber: 47,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(RestaurentCard, {}, void 0, false, {
-                        fileName: "app.js",
-                        lineNumber: 48,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(RestaurentCard, {}, void 0, false, {
-                        fileName: "app.js",
-                        lineNumber: 49,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(RestaurentCard, {}, void 0, false, {
-                        fileName: "app.js",
-                        lineNumber: 50,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(RestaurentCard, {}, void 0, false, {
-                        fileName: "app.js",
-                        lineNumber: 51,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(RestaurentCard, {}, void 0, false, {
-                        fileName: "app.js",
-                        lineNumber: 52,
-                        columnNumber: 9
-                    }, undefined)
-                ]
-            }, void 0, true, {
+                        lineNumber: 143,
+                        columnNumber: 11
+                    }, undefined))
+            }, void 0, false, {
                 fileName: "app.js",
-                lineNumber: 44,
+                lineNumber: 141,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "app.js",
-        lineNumber: 42,
+        lineNumber: 139,
         columnNumber: 5
     }, undefined);
 };
@@ -872,18 +967,18 @@ const AppLayout = ()=>{
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(Header, {}, void 0, false, {
                 fileName: "app.js",
-                lineNumber: 60,
+                lineNumber: 152,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(Body, {}, void 0, false, {
                 fileName: "app.js",
-                lineNumber: 61,
+                lineNumber: 153,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "app.js",
-        lineNumber: 59,
+        lineNumber: 151,
         columnNumber: 5
     }, undefined);
 };
@@ -893,7 +988,7 @@ const root = (0, _clientDefault.default).createRoot(document.getElementById("roo
 //rendering root
 root.render(/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(AppLayout, {}, void 0, false, {
     fileName: "app.js",
-    lineNumber: 70,
+    lineNumber: 162,
     columnNumber: 13
 }, undefined));
 var _c, _c1, _c2, _c3;
