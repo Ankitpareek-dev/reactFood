@@ -1,11 +1,9 @@
+import { HEADER_LOGO_URL } from "../utils/constants";
 export default function Header() {
   return (
     <div className="header">
       <div className="logo-container">
-        <img
-          className="logo"
-          src="https://png.pngtree.com/png-vector/20220623/ourmid/pngtree-food-logo-png-image_5296974.png"
-        />
+        <img className="logo" src={HEADER_LOGO_URL} />
       </div>
 
       <div className="nav-items">

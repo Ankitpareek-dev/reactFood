@@ -44,3 +44,7 @@
   width: 100%;
   border: 1px solid black;
 }
+.filter-btn {
+  margin: 10px;
+  cursor: pointer;
+}
