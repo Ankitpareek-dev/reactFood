@@ -873,7 +873,7 @@ const resList = [
 exports.default = resList;
 const RestaurentCard = (props)=>{
     const { resData } = props;
-    const { name, cuisine, stars, deliveryTime, imageId } = resData;
+    const { name, cuisine, avgRating, deliveryTime, imageId } = resData;
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         className: "res-card",
         children: [
@@ -901,7 +901,7 @@ const RestaurentCard = (props)=>{
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h4", {
                 children: [
-                    stars,
+                    avgRating,
                     " \u2B50"
                 ]
             }, void 0, true, {
