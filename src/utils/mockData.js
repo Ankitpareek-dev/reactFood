@@ -3,7 +3,7 @@ export const resList = [
     id: 0,
     name: "Spice Villa",
     cuisine: ["North Indian", "Chinese"],
-    avgRating: 4.5,
+    avgRating: 3,
     costForTwo: 400,
     deliveryTime: "30-40 mins",
     imageId: "sample",

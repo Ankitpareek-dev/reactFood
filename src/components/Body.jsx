@@ -1,69 +1,39 @@
 import RestaurentCard from "./RestaurentCard";
 import { resList } from "../utils/mockData";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Shimmer from "./Shimmer";
 
 export default function Body() {
-  const [listOfRestaurents, setListOfRestaurents] = useState([
-    {
-      data: {
-        id: "335575",
-        name: "KFC",
-        cloudinaryImageId: "abcejfhnejf78e7",
-        cuisines: ["burger", "fries", "pizza", "snacks"],
-        costForTwo: 400,
-        deliveryTime: 36,
-        avgRating: "4.5",
-      },
-    },
-    {
-      data: {
-        id: "33575",
-        name: "Dominos",
-        cloudinaryImageId: "abcejfhnejf78e7",
-        cuisines: ["burger", "fries", "pizza", "snacks"],
-        costForTwo: 400,
-        deliveryTime: 36,
-        avgRating: "3.8",
-      },
-    },
-  ]);
-  let listOfRestaurentsJS = [
-    {
-      data: {
-        id: "335575",
-        name: "KFC",
-        cloudinaryImageId: "abcejfhnejf78e7",
-        cuisines: ["burger", "fries", "pizza", "snacks"],
-        costForTwo: 400,
-        deliveryTime: 36,
-        avgRating: "4.5",
-      },
-    },
-    {
-      data: {
-        id: "33575",
-        name: "Dominos",
-        cloudinaryImageId: "abcejfhnejf78e7",
-        cuisines: ["burger", "fries", "pizza", "snacks"],
-        costForTwo: 400,
-        deliveryTime: 36,
-        avgRating: "3.8",
-      },
-    },
-  ];
+  const [listOfRestaurents, setListOfRestaurents] = useState([]);
 
+  useEffect(() => {
+    apiData();
+  }, []);
+
+  const apiData = async () => {
+    const data = await fetch(
+      "https://mocki.io/v1/2ed8f886-6353-4225-88de-6d7053908d6c"
+    );
+
+    const json = await data.json();
+    console.log(json);
+    setListOfRestaurents(json);
+  };
+
+  if (listOfRestaurents.length === 0) {
+    return <Shimmer />;
+  }
   return (
     <div className="body">
       <div className="filter">
         <button
           className="filter-btn"
           onClick={() => {
-            setListOfRestaurents();
             const filteredList = listOfRestaurents.filter(
-              (res) => res.data.avgRating > 4
+              (res) => res.avgRating > 4
             );
             setListOfRestaurents(filteredList);
-            console.log(listOfRestaurents);
+            console.log(filteredList);
           }}
         >
           Top Rated Restaurents
@@ -71,7 +41,7 @@ export default function Body() {
       </div>
       <div className="res-container">
         {listOfRestaurents.map((restaurent) => (
-          <RestaurentCard resData={restaurent} key={restaurent.data.id} />
+          <RestaurentCard resData={restaurent} key={restaurent.id} />
         ))}
       </div>
     </div>

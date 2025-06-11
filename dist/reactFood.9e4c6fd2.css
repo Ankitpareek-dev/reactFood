@@ -54,4 +54,15 @@
   cursor: pointer;
   margin: 10px;
 }
+
+.shimmer-container {
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.shimmer-card {
+  background-color: red;
+  width: 200px;
+  height: 400px;
+}
 /*# sourceMappingURL=reactFood.9e4c6fd2.css.map */
