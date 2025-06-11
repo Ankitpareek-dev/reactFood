@@ -16,7 +16,7 @@ export default function Body() {
 
   const apiData = async () => {
     const data = await fetch(
-      "https://mocki.io/v1/2ed8f886-6353-4225-88de-6d7053908d6c"
+      "https://mocki.io/v1/7a36d283-af88-4a03-944f-40deeb7efa6a"
     );
 
     const json = await data.json();
