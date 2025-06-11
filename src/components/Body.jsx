@@ -5,10 +5,13 @@ import Shimmer from "./Shimmer";
 
 export default function Body() {
   const [listOfRestaurents, setListOfRestaurents] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     apiData();
   }, []);
+
+  console.log("body rendred");
 
   const apiData = async () => {
     const data = await fetch(
@@ -20,12 +23,31 @@ export default function Body() {
     setListOfRestaurents(json);
   };
 
-  if (listOfRestaurents.length === 0) {
-    return <Shimmer />;
-  }
-  return (
+  return listOfRestaurents.length === 0 ? (
+    <Shimmer />
+  ) : (
     <div className="body">
       <div className="filter">
+        <div className="search">
+          <input
+            type="text"
+            className="search-box"
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
+          ></input>
+          <button
+            onClick={() => {
+              const filteredRestaurent = listOfRestaurents.filter((res) =>
+                res.name.includes(searchText)
+              );
+              setListOfRestaurents(filteredRestaurent);
+            }}
+          >
+            Search
+          </button>
+        </div>
         <button
           className="filter-btn"
           onClick={() => {

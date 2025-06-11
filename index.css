@@ -58,3 +58,9 @@
   height: 400px;
   background-color: red;
 }
+.login-btn {
+  padding: 0 20px;
+}
+.filter {
+  display: flex;
+}

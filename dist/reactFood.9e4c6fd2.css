@@ -65,4 +65,12 @@
   width: 200px;
   height: 400px;
 }
+
+.login-btn {
+  padding: 0 20px;
+}
+
+.filter {
+  display: flex;
+}
 /*# sourceMappingURL=reactFood.9e4c6fd2.css.map */
