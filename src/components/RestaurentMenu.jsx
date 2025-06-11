@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router";
+import { RESTAURENT_LIST_URL } from "../utils/constants";
 
 const RestaurentMenu = () => {
   const [resInfo, setResInfo] = useState(null);
@@ -13,9 +14,7 @@ const RestaurentMenu = () => {
   }, []);
 
   const fetchMenu = async () => {
-    const data = await fetch(
-      "https://mocki.io/v1/7a36d283-af88-4a03-944f-40deeb7efa6a"
-    );
+    const data = await fetch(RESTAURENT_LIST_URL);
     const json = await data.json();
     setResInfo(json);
   };
@@ -28,9 +27,9 @@ const RestaurentMenu = () => {
       <h2>{resInfo[parseInt(resId)].avgRating}</h2>
       <h2>{resInfo[parseInt(resId)].cuisines.join(", ")}</h2>
       <ul>
-        {resInfo[parseInt(resId)].menu.map((item) => {
-          return <li key={resInfo.id}>{item}</li>;
-        })}
+        {resInfo[parseInt(resId)].menu.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
       </ul>
     </div>
   );

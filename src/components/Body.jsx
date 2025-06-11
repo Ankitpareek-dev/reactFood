@@ -2,6 +2,8 @@ import RestaurentCard from "./RestaurentCard";
 import { resList } from "../utils/mockData";
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
+import { RESTAURENT_LIST_URL } from "../utils/constants";
+import { Link } from "react-router";
 
 export default function Body() {
   const [listOfRestaurents, setListOfRestaurents] = useState([]);
@@ -15,9 +17,7 @@ export default function Body() {
   console.log("body rendred");
 
   const apiData = async () => {
-    const data = await fetch(
-      "https://mocki.io/v1/7a36d283-af88-4a03-944f-40deeb7efa6a"
-    );
+    const data = await fetch(RESTAURENT_LIST_URL);
 
     const json = await data.json();
     console.log(json);
@@ -65,7 +65,9 @@ export default function Body() {
       </div>
       <div className="res-container">
         {filteredRestaurent.map((restaurent) => (
-          <RestaurentCard resData={restaurent} key={restaurent.id} />
+          <Link key={restaurent.id} to={"/restaurent/" + restaurent.id}>
+            <RestaurentCard resData={restaurent} />
+          </Link>
         ))}
       </div>
     </div>
