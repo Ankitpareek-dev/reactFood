@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
 import { RESTAURENT_LIST_URL } from "../utils/constants";
 import { Link } from "react-router";
-
+import useOnlineStatus from "../utils/useOnlineStatus";
 export default function Body() {
   const [listOfRestaurents, setListOfRestaurents] = useState([]);
   const [filteredRestaurent, setFilteredRestaurent] = useState();
@@ -25,6 +25,9 @@ export default function Body() {
     setFilteredRestaurent(json);
   };
 
+  const onlineStatus = useOnlineStatus();
+
+  if (onlineStatus === false) return <h1>internet connection Lost</h1>;
   return listOfRestaurents.length === 0 ? (
     <Shimmer />
   ) : (
