@@ -46,7 +46,7 @@ export default function Body() {
             <button
               className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition"
               onClick={() => {
-                const filtered = originalList.filter((res) =>
+                const filtered = filteredRestaurent.filter((res) =>
                   res.name.toLowerCase().includes(searchText.toLowerCase())
                 );
                 setFilteredRestaurent(filtered);
@@ -59,7 +59,9 @@ export default function Body() {
           <button
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition"
             onClick={() => {
-              const topRated = originalList.filter((res) => res.avgRating > 4);
+              const topRated = filteredRestaurent.filter(
+                (res) => res.avgRating > 4
+              );
               setFilteredRestaurent(topRated);
             }}
           >
