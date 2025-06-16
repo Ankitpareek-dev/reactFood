@@ -21,3 +21,16 @@ export default function RestaurentCard(props) {
     </div>
   );
 }
+
+export const withPromotedLabel = (RestaurentCard) => {
+  return (props) => {
+    return (
+      <div>
+        <label className="absolute bg-black text-white m-2 p-2 rounded-lg">
+          Promoted
+        </label>
+        <RestaurentCard {...props} />
+      </div>
+    );
+  };
+};

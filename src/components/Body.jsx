@@ -1,10 +1,13 @@
-import RestaurentCard from "./RestaurentCard";
+import RestaurentCard, { withPromotedLabel } from "./RestaurentCard";
 import { resList } from "../utils/mockData";
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
 import { RESTAURENT_LIST_URL } from "../utils/constants";
 import { Link } from "react-router";
 import useOnlineStatus from "../utils/useOnlineStatus";
+
+const RestaurentCardPromoted = withPromotedLabel(RestaurentCard);
+
 export default function Body() {
   const [listOfRestaurents, setListOfRestaurents] = useState([]);
   const [filteredRestaurent, setFilteredRestaurent] = useState();
@@ -74,7 +77,11 @@ export default function Body() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             {filteredRestaurent.map((restaurent) => (
               <Link key={restaurent.id} to={"/restaurent/" + restaurent.id}>
-                <RestaurentCard resData={restaurent} />
+                {restaurent.promoted === true ? (
+                  <RestaurentCardPromoted resData={restaurent} />
+                ) : (
+                  <RestaurentCard resData={restaurent} />
+                )}
               </Link>
             ))}
           </div>

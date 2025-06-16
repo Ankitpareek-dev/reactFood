@@ -68,6 +68,7 @@
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --radius-md: .375rem;
+    --radius-lg: .5rem;
     --radius-xl: .75rem;
     --radius-2xl: 1rem;
     --radius-4xl: 2rem;
@@ -328,6 +329,14 @@
 @layer components;
 
 @layer utilities {
+  .absolute {
+    position: absolute;
+  }
+
+  .m-2 {
+    margin: calc(var(--spacing) * 2);
+  }
+
   .mx-auto {
     margin-inline: auto;
   }
@@ -440,6 +449,10 @@
     border-radius: 3.40282e38px;
   }
 
+  .rounded-lg {
+    border-radius: var(--radius-lg);
+  }
+
   .rounded-md {
     border-radius: var(--radius-md);
   }
@@ -455,6 +468,10 @@
 
   .border-gray-300 {
     border-color: var(--color-gray-300);
+  }
+
+  .bg-black {
+    background-color: var(--color-black);
   }
 
   .bg-blue-600 {
@@ -480,6 +497,10 @@
   .object-cover {
     -o-object-fit: cover;
     object-fit: cover;
+  }
+
+  .p-2 {
+    padding: calc(var(--spacing) * 2);
   }
 
   .p-4 {
