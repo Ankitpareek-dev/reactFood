@@ -3,24 +3,31 @@ import Shimmer from "./Shimmer";
 import { useParams } from "react-router";
 
 import useRestaurentMenu from "../utils/useRestaurentMenu";
+import RestaurentCategory from "./RestaurentCategory";
 
 const RestaurentMenu = () => {
   const { resId } = useParams();
 
   const resInfo = useRestaurentMenu();
 
-  return resInfo === null ? (
-    <Shimmer></Shimmer>
-  ) : (
-    <div className="menu">
-      <h1>{resInfo[parseInt(resId)].name}</h1>
-      <h2>{resInfo[parseInt(resId)].avgRating}</h2>
-      <h2>{resInfo[parseInt(resId)].cuisines.join(", ")}</h2>
-      <ul>
-        {resInfo[parseInt(resId)].menu.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
+  const res = resInfo?.[parseInt(resId)];
+
+  if (resInfo === null) {
+    return <Shimmer></Shimmer>;
+  }
+
+  const { name, avgRating, cuisines, menu } = res;
+  const categories = Object.keys(menu);
+  // console.log(categories);
+  // console.log(menu);
+  return (
+    // {const { name, avgRating, cuisines, menu } = resInfo[parseInt(resId)]}
+    <div className="text-center">
+      <h1 className="font-bold my-10 text-2xl">{name}</h1>
+      <h2 className="font-bold text-lg">{cuisines.join(", ")}</h2>
+      {categories.map((category, index) => (
+        <RestaurentCategory key={index} data={category}></RestaurentCategory>
+      ))}
     </div>
   );
 };
