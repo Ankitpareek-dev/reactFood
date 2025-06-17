@@ -17,16 +17,20 @@ const RestaurentMenu = () => {
   }
 
   const { name, avgRating, cuisines, menu } = res;
-  const categories = Object.keys(menu);
-  // console.log(categories);
+
+  // console .log(categories);
   // console.log(menu);
   return (
     // {const { name, avgRating, cuisines, menu } = resInfo[parseInt(resId)]}
     <div className="text-center">
       <h1 className="font-bold my-10 text-2xl">{name}</h1>
       <h2 className="font-bold text-lg">{cuisines.join(", ")}</h2>
-      {categories.map((category, index) => (
-        <RestaurentCategory key={index} data={category}></RestaurentCategory>
+      {Object.entries(menu).map(([categoryTitle, items]) => (
+        <RestaurentCategory
+          key={categoryTitle}
+          title={categoryTitle}
+          items={items}
+        ></RestaurentCategory>
       ))}
     </div>
   );
