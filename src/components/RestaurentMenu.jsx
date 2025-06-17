@@ -23,8 +23,10 @@ const RestaurentMenu = () => {
 
   return (
     <div className="text-center">
-      <h1 className="font-bold my-10 text-2xl">{name}</h1>
-      <h2 className="font-bold text-lg">{cuisines.join(", ")}</h2>
+      <h1 className="text-4xl font-extrabold text-green-700 mb-4">{name}</h1>
+      <h2 className="text-lg text-gray-600 mb-6 italic">
+        {cuisines.join(", ")}
+      </h2>
       {Object.entries(menu).map(([categoryTitle, items], index) => (
         <RestaurentCategory
           key={categoryTitle}
