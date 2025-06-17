@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import ItemList from "./ItemList";
 
@@ -8,7 +9,7 @@ const RestaurentCategory = ({ title, items }) => {
     setIsOpen(!isOpen);
   };
   return (
-    <div className="w-6/12 mx-auto my-4 bg-grey shadow-lg p-4">
+    <div className="w-6/12 mx-auto my-4 bg-grey shadow-lg p-4 border-4 border-[#00a63e] rounded-3xl">
       {/* {console.log(menu)} */}
       <div
         onClick={() => {

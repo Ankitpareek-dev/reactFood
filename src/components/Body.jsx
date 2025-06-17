@@ -1,3 +1,4 @@
+import React from "react";
 import RestaurentCard, { withPromotedLabel } from "./RestaurentCard";
 import { resList } from "../utils/mockData";
 import { useState, useEffect } from "react";

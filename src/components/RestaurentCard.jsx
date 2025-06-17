@@ -1,3 +1,4 @@
+import React from "react";
 import { CND_RESTAURENT_URL } from "../utils/constants";
 
 export default function RestaurentCard(props) {
