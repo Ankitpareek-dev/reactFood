@@ -7,6 +7,8 @@ import useRestaurentMenu from "../utils/useRestaurentMenu";
 import RestaurentCategory from "./RestaurentCategory";
 
 const RestaurentMenu = () => {
+  const [showIndex, setShowIndex] = useState(null);
+
   const { resId } = useParams();
 
   const resInfo = useRestaurentMenu();
@@ -26,11 +28,13 @@ const RestaurentMenu = () => {
     <div className="text-center">
       <h1 className="font-bold my-10 text-2xl">{name}</h1>
       <h2 className="font-bold text-lg">{cuisines.join(", ")}</h2>
-      {Object.entries(menu).map(([categoryTitle, items]) => (
+      {Object.entries(menu).map(([categoryTitle, items], index) => (
         <RestaurentCategory
           key={categoryTitle}
           title={categoryTitle}
           items={items}
+          isOpen={index === showIndex ? true : false}
+          setShowIndex={() => setShowIndex(showIndex === index ? null : index)}
         ></RestaurentCategory>
       ))}
     </div>
