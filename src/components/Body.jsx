@@ -37,7 +37,6 @@ export default function Body() {
   ) : (
     <div className="bg-gray-50 min-h-screen py-6">
       <div className="max-w-screen-xl mx-auto px-4">
-        {/* 🔍 Search + Filter Section */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
           <div className="flex gap-3 w-full md:w-auto">
             <input
@@ -73,7 +72,6 @@ export default function Body() {
           </button>
         </div>
 
-        {/* 🍽️ Restaurant Cards Grid */}
         <div className="flex justify-center">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             {filteredRestaurent.map((restaurent) => (

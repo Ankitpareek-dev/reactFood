@@ -11,7 +11,6 @@ export default function Header() {
   return (
     <div className="bg-green-600 drop-shadow-2xl py-2">
       <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-between h-16 rounded-2xl">
-        {/* Logo */}
         <div className="flex items-center ">
           <img
             className="w-12 h-12 rounded-4xl"
@@ -20,7 +19,6 @@ export default function Header() {
           />
         </div>
 
-        {/* Navigation */}
         <div className="flex items-center">
           <ul className="flex items-center gap-6 text-white font-medium">
             <li className="text-sm">
