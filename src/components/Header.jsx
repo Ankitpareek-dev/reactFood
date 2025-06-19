@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { HEADER_LOGO_URL } from "../utils/constants";
 import { useState } from "react";
 import { Link } from "react-router";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
+import { useContext } from "react";
 
 export default function Header() {
   let [btnName, setBtnName] = useState("login");
 
   const onlineStatus = useOnlineStatus();
+
+  const { loggedInUser } = useContext(UserContext);
   return (
     <div className="bg-green-600 drop-shadow-2xl py-2">
       <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-between h-16 rounded-2xl">
@@ -81,6 +85,7 @@ export default function Header() {
                 {btnName}
               </button>
             </li>
+            <li>{loggedInUser}</li>
           </ul>
         </div>
       </div>
