@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import UserContext from "../utils/UserContext";
 import { useContext } from "react";
+import { useSelector } from "react-redux";
 
 export default function Header() {
   let [btnName, setBtnName] = useState("login");
@@ -12,6 +13,8 @@ export default function Header() {
   const onlineStatus = useOnlineStatus();
 
   const { loggedInUser } = useContext(UserContext);
+
+  const cartItems = useSelector((store) => store.cart.items);
   return (
     <div className="bg-green-600 drop-shadow-2xl py-2">
       <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-between h-16 rounded-2xl">
@@ -64,7 +67,7 @@ export default function Header() {
                 to="/"
                 className="hover:text-gray-200 transition duration-200"
               >
-                Cart
+                🛒 Cart ({cartItems.length} items)
               </Link>
             </li>
             <li>
