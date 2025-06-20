@@ -10,6 +10,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router";
 import UserContext from "./utils/UserContext";
 import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
+import { useDispatch } from "react-redux";
 
 const Grocery = lazy(() => import("./components/Grocery"));
 

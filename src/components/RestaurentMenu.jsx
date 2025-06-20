@@ -5,6 +5,8 @@ import { useParams } from "react-router";
 
 import useRestaurentMenu from "../utils/useRestaurentMenu";
 import RestaurentCategory from "./RestaurentCategory";
+import { useDispatch } from "react-redux";
+import { addItem } from "../utils/cartSlice";
 
 const RestaurentMenu = () => {
   const [showIndex, setShowIndex] = useState(null);
