@@ -6,6 +6,7 @@ import useOnlineStatus from "../utils/useOnlineStatus";
 import UserContext from "../utils/UserContext";
 import { useContext } from "react";
 import { useSelector } from "react-redux";
+import { clearCart } from "../utils/cartSlice";
 
 export default function Header() {
   let [btnName, setBtnName] = useState("login");
@@ -15,6 +16,7 @@ export default function Header() {
   const { loggedInUser } = useContext(UserContext);
 
   const cartItems = useSelector((store) => store.cart.items);
+  // console.log(cartItems);
   return (
     <div className="bg-green-600 drop-shadow-2xl py-2">
       <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-between h-16 rounded-2xl">
@@ -64,7 +66,7 @@ export default function Header() {
             </li>
             <li>
               <Link
-                to="/"
+                to="/cart"
                 className="hover:text-gray-200 transition duration-200"
               >
                 🛒 Cart ({cartItems.length} items)
