@@ -10,31 +10,33 @@ const createToken = (userId, role) => {
   });
 };
 
-authRouter.post("signup/customer", async (req, res) => {
-  const { name, emailId, password } = req.body;
+authRouter.post("/signup/customer", async (req, res) => {
+  const { name, email, password } = req.body;
   const user = new UserModel({
     name,
-    emailId,
+    email,
     password,
     role: "customer",
   });
   try {
     await user.save();
+    res.send("user created successfully");
   } catch (err) {
     console.error(err);
   }
 });
 
-authRouter.post("signup/restaurent", async (req, res) => {
-  const { name, emailId, password, cuisine } = req.body;
+authRouter.post("/signup/restaurent", async (req, res) => {
+  const { name, email, password, cuisine } = req.body;
   const user = new UserModel({
     name,
-    emailId,
+    email,
     password,
     role: "restaurent",
   });
   try {
     await user.save();
+    res.send("user created successfully");
   } catch (err) {
     console.error(err);
   }
@@ -49,13 +51,20 @@ authRouter.post("/login", async (req, res) => {
     }
     const token = createToken(user._id, user.role);
     // const isProd = process.env.NODE_ENV === "production";
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: isProd,
-      sameSite: "none", // or "strict" for local testing
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
+    res.cookie(
+      "token",
+      token
+      //     {
+      //   httpOnly: true,
+      //   secure: isProd,
+      //   sameSite: "none",
+      //   maxAge: 24 * 60 * 60 * 1000,
+      // }
+    );
+    res.send("login sucessfull");
   } catch (err) {
     console.error(err.message);
   }
 });
+
+module.exports = authRouter;

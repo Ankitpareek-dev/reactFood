@@ -10,9 +10,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("working");
-});
+const authRouter = require("./routes/authentication");
+
+app.use("/", authRouter);
 
 connectDb()
   .then(() => {
