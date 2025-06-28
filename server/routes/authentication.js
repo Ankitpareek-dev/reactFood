@@ -2,6 +2,7 @@ const express = require("express");
 const authRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/User");
+const CuisineModel = require("../models/Cuisine");
 
 //this function will help create jwt token based on the role of the login user
 const createToken = (userId, role) => {
@@ -27,15 +28,26 @@ authRouter.post("/signup/customer", async (req, res) => {
 });
 
 authRouter.post("/signup/restaurent", async (req, res) => {
-  const { name, email, password, cuisine } = req.body;
+  const { name, email, password, cuisines } = req.body;
   const user = new UserModel({
     name,
     email,
     password,
     role: "restaurent",
   });
+
   try {
-    await user.save();
+    const savedUser = await user.save();
+    for (const cuisine of cuisines) {
+      const cuisineData = new CuisineModel({
+        restaurantId: savedUser._id,
+        name: savedUser.name,
+        cuisines: cuisine.cuisine, // string like "Italian"
+        categories: cuisine.categories, // array of categories
+      });
+      await cuisineData.save();
+    }
+
     res.send("user created successfully");
   } catch (err) {
     console.error(err);
