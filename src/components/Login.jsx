@@ -17,10 +17,16 @@ const Login = () => {
     e.preventDefault(); // Prevent default form submit behavior
     setIsLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:5000/login",
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       // const data = await res.json();
       // console.log(res.data);
       setIsErrorMessage(false);

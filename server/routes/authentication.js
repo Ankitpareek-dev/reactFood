@@ -66,16 +66,12 @@ authRouter.post("/login", async (req, res) => {
     }
     const token = createToken(user._id, user.role);
     // const isProd = process.env.NODE_ENV === "production";
-    res.cookie(
-      "token",
-      token
-      //     {
-      //   httpOnly: true,
-      //   secure: isProd,
-      //   sameSite: "none",
-      //   maxAge: 24 * 60 * 60 * 1000,
-      // }
-    );
+    res.cookie("token", token, {
+      httpOnly: true, // prevents JS access
+      sameSite: "lax", // or "none" if cross-origin with HTTPS
+      secure: false, // true if using HTTPS (localhost = false)
+      maxAge: 86400000, // 1 day
+    });
     const { name, role } = user;
     res.send({ name: name, role: role });
   } catch (err) {
