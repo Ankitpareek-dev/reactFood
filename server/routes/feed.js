@@ -4,6 +4,21 @@ const jwt = require("jsonwebtoken");
 const UserModel = require("../models/User");
 const CuisineModel = require("../models/Cuisine");
 const auth = require("../middlewares/auth");
+const mongoose = require("mongoose");
+
+feedRouter.get("/feed/view/:restaurantId", auth, async (req, res) => {
+  try {
+    const cleanedId = req.params.restaurantId?.trim();
+
+    const objectId = new mongoose.Types.ObjectId(cleanedId);
+    const restaurant = await CuisineModel.find({ restaurantId: objectId });
+
+    res.send(restaurant);
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
 feedRouter.get("/feed", auth, async (req, res) => {
   try {

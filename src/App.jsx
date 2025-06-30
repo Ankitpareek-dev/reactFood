@@ -3,7 +3,7 @@ import Landing from "./components/Landing";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Feed from "./components/Feed";
-import RestaurentPanel from "./components/restaurentPanel";
+import RestaurentPage from "./components/RestaurantPage";
 
 const Layout = () => {
   return (
@@ -30,8 +30,8 @@ const router = createBrowserRouter([
         element: <Feed />,
       },
       {
-        path: "/restaurentPanel",
-        element: <RestaurentPanel />,
+        path: "/feed/view/:restaurantId",
+        element: <RestaurentPage />,
       },
     ],
   },

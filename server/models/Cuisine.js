@@ -19,7 +19,6 @@ const CuisineSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    ref: "UserModel",
     required: true,
   },
   cuisines: { type: String, required: true },
