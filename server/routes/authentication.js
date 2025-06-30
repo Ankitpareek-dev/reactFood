@@ -59,8 +59,8 @@ authRouter.post("/signup/restaurent", async (req, res) => {
 
 authRouter.post("/login", async (req, res) => {
   try {
-    const { emailId, password } = req.body;
-    const user = await UserModel.findOne({ emailId });
+    const { email, password } = req.body;
+    const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(401).send("invalid email or password");
     }
@@ -76,7 +76,8 @@ authRouter.post("/login", async (req, res) => {
       //   maxAge: 24 * 60 * 60 * 1000,
       // }
     );
-    res.send("login sucessfull");
+    const { name, role } = user;
+    res.send({ name: name, role: role });
   } catch (err) {
     console.error(err.message);
   }
