@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { addUser } from "../utils/userSlice";
+import { useNavigate } from "react-router-dom";
+import useUserStore from "../utils/userStore";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +9,9 @@ const Login = () => {
   const [isErrorMessage, setIsErrorMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const dispatch = useDispatch();
+  const addUser = useUserStore((state) => state.addUser);
+
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent default form submit behavior
@@ -20,10 +22,16 @@ const Login = () => {
         password,
       });
       // const data = await res.json();
-      console.log(res.data);
+      // console.log(res.data);
       setIsErrorMessage(false);
       setIsLoading(false);
-      dispatch(addUser(res.data));
+      addUser(res.data);
+      // dispatch(addUser(res.data));
+      if (res.data.role === "customer") {
+        navigate("/feed");
+      } else {
+        navigate("/restaurentPanel");
+      }
       // Navigate or store token if needed
     } catch (err) {
       setIsErrorMessage(true);
