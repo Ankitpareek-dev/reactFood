@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../utils/userStore";
+import { jwtDecode } from "jwt-decode";
+import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -45,6 +47,20 @@ const Login = () => {
       console.error("Login failed:", err.message);
     }
   };
+
+  useEffect(() => {
+    const checkUserAuth = async () => {
+      try {
+        const res = await axios.get(BASE_URL + "/me", {
+          withCredentials: true,
+        });
+        navigate("/feed");
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    checkUserAuth();
+  }, []);
 
   return (
     <div

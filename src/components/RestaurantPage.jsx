@@ -36,13 +36,11 @@ export default function RestaurantPage() {
   };
 
   const handleAddToCart = ({ itemName, itemDescription, itemPrice }) => {
-    addCart([
-      {
-        itemName: itemName,
-        itemDescription: itemDescription,
-        itemPrice: itemPrice,
-      },
-    ]);
+    addCart({
+      itemName: itemName,
+      itemDescription: itemDescription,
+      itemPrice: itemPrice,
+    });
   };
 
   return (

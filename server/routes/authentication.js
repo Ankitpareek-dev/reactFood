@@ -3,6 +3,7 @@ const authRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/User");
 const CuisineModel = require("../models/Cuisine");
+const auth = require("../middlewares/auth");
 
 //this function will help create jwt token based on the role of the login user
 const createToken = (userId, role) => {
@@ -76,6 +77,15 @@ authRouter.post("/login", async (req, res) => {
     res.send({ name: name, role: role });
   } catch (err) {
     console.error(err.message);
+  }
+});
+
+authRouter.get("/me", auth, async (req, res) => {
+  try {
+    res.send(req.user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Something went wrong" });
   }
 });
 

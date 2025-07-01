@@ -1,22 +1,38 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 
 const useCartStore = create(
-  persist((get, set) => ({
-    cart: [],
-    addCart: (item) => {
-      const cart = get().cart;
-      const existingItem = cart.find((i) => i.itemName === item.itemName);
+  persist(
+    immer((set) => ({
+      cart: [],
+      addCart: (item) => {
+        set((state) => {
+          const existingItem = state.cart.find(
+            (i) => i.itemName === item.itemName
+          );
 
-      if (existingItem) {
-        console.log("alreadyexists");
-      }
-    },
-    removeCart: () =>
-      set({
-        cart: null,
-      }),
-  }))
+          if (!existingItem) {
+            state.cart.push({
+              ...item, // Spread the actual object
+              itemQuantity: 1,
+            });
+          } else {
+            existingItem.itemQuantity += 1;
+          }
+        });
+      },
+
+      removeCart: () => {
+        set((state) => {
+          state.cart = [];
+        });
+      },
+    })),
+    {
+      name: "cart", // localStorage key
+    }
+  )
 );
 
 export default useCartStore;
