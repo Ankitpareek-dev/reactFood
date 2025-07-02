@@ -54,6 +54,7 @@ const Login = () => {
         const res = await axios.get(BASE_URL + "/me", {
           withCredentials: true,
         });
+        console.log(res);
         navigate("/feed");
       } catch (err) {
         console.error(err);

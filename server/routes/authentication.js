@@ -13,7 +13,7 @@ const createToken = (userId, role) => {
 };
 
 authRouter.post("/signup/customer", async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role = "customer" } = req.body;
   const user = new UserModel({
     name,
     email,
@@ -22,7 +22,7 @@ authRouter.post("/signup/customer", async (req, res) => {
   });
   try {
     await user.save();
-    res.send("user created successfully");
+    res.send({ name: name, role: role });
   } catch (err) {
     console.error(err);
   }
@@ -65,7 +65,7 @@ authRouter.post("/login", async (req, res) => {
     if (!user) {
       return res.status(401).send("invalid email or password");
     }
-    const token = createToken(user._id, user.role);
+    const token = createToken(user._id, user.name, user.role);
     // const isProd = process.env.NODE_ENV === "production";
     res.cookie("token", token, {
       httpOnly: true, // prevents JS access

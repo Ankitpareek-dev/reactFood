@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
+import useUserStore from "../utils/userStore";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -10,6 +11,8 @@ export default function Signup() {
   const [isLoading, setIsLoading] = useState(false);
   const [isErrorMessage, setIsErrorMessage] = useState(false);
 
+  const navigate = useNavigate();
+  const addUser = useUserStore((store) => store.addUser);
   const handleSignup = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -23,6 +26,9 @@ export default function Signup() {
       );
       setIsLoading(false);
       console.log("success");
+      navigate("/feed");
+      console.log(res.data);
+      addUser(res.data);
     } catch (err) {
       setIsErrorMessage(true);
       console.error(err);
