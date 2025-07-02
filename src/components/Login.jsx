@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import useUserStore from "../utils/userStore";
-import { jwtDecode } from "jwt-decode";
 import { BASE_URL } from "../utils/constants";
 
 const Login = () => {

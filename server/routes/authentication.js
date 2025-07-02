@@ -72,12 +72,24 @@ authRouter.post("/login", async (req, res) => {
       sameSite: "lax", // or "none" if cross-origin with HTTPS
       secure: false, // true if using HTTPS (localhost = false)
       maxAge: 86400000, // 1 day
+      path: "/",
     });
     const { name, role } = user;
     res.send({ name: name, role: role });
   } catch (err) {
     console.error(err.message);
   }
+});
+
+authRouter.post("/logout", auth, (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true, // only if using HTTPS
+    sameSite: "strict",
+    path: "/", // should match the path used when setting cookie
+  });
+
+  return res.status(200).json({ message: "Logged out successfully" });
 });
 
 authRouter.get("/me", auth, async (req, res) => {

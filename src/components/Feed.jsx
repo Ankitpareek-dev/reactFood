@@ -5,10 +5,11 @@ import { BASE_URL } from "../utils/constants";
 import RestaurentPanel from "./restaurentPanel";
 import { Link } from "react-router-dom";
 import useRestaurantStore from "../utils/restaurantStore";
-
+import useCheckLoginStatus from "../hooks/useCheckLoginStatus";
 function Feed() {
   const setRestaurants = useRestaurantStore((state) => state.setRestaurants);
   const [resData, setResData] = useState([]);
+  useCheckLoginStatus();
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
