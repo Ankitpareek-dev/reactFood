@@ -1,66 +1,33 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import useUserStore from "../utils/userStore";
-import { jwtDecode } from "jwt-decode";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 
-const Login = () => {
+export default function Signup() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isErrorMessage, setIsErrorMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isErrorMessage, setIsErrorMessage] = useState(false);
 
-  const addUser = useUserStore((state) => state.addUser);
-
-  const navigate = useNavigate();
-
-  const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent default form submit behavior
+  const handleSignup = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
+    setIsErrorMessage(false);
+
     try {
       const res = await axios.post(
-        BASE_URL + "/login",
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
+        BASE_URL + "/signup/customer",
+        { name, email, password },
+        { withCredentials: true }
       );
-      // const data = await res.json();
-      // console.log(res.data);
-      setIsErrorMessage(false);
       setIsLoading(false);
-      addUser(res.data);
-      // dispatch(addUser(res.data));
-      if (res.data.role === "customer") {
-        navigate("/feed");
-      } else {
-        navigate("/restaurentPanel");
-      }
-      // Navigate or store token if needed
+      console.log("success");
     } catch (err) {
       setIsErrorMessage(true);
-      setIsLoading(false);
-      console.error("Login failed:", err.message);
+      console.error(err);
     }
   };
-
-  useEffect(() => {
-    const checkUserAuth = async () => {
-      try {
-        const res = await axios.get(BASE_URL + "/me", {
-          withCredentials: true,
-        });
-        navigate("/feed");
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    checkUserAuth();
-  }, []);
 
   return (
     <div
@@ -75,10 +42,24 @@ const Login = () => {
         }}
       >
         <h2 className="text-2xl font-semibold text-center mb-6">
-          Login to your account
+          Create your account
         </h2>
 
-        <form className="space-y-5" onSubmit={handleLogin}>
+        <form className="space-y-5" onSubmit={handleSignup}>
+          <div>
+            <label htmlFor="name" className="block mb-1 text-sm font-medium">
+              Name
+            </label>
+            <input
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              id="name"
+              className="w-full px-4 py-2 rounded-lg border border-[oklch(0.93_0.0094_286.2156)] bg-white text-black focus:outline-none focus:ring-2 focus:ring-[oklch(0.5393_0.2713_286.7462)]"
+              placeholder="Your full name"
+              required
+            />
+          </div>
+
           <div>
             <label htmlFor="email" className="block mb-1 text-sm font-medium">
               Email
@@ -109,28 +90,30 @@ const Login = () => {
               required
             />
           </div>
-          {isErrorMessage && <p className="text-red-500">Wrong Credentials</p>}
+
+          {isErrorMessage && (
+            <p className="text-red-500">Something went wrong. Try again.</p>
+          )}
+
           <button
             type="submit"
             className="w-full font-semibold py-2 rounded-[1.4rem] text-white transition-colors duration-200"
             style={{ backgroundColor: "oklch(0.5393 0.2713 286.7462)" }}
           >
-            {isLoading ? "loading" : "Sign in"}
+            {isLoading ? "Creating..." : "Sign up"}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm">
-          Don’t have an account?{" "}
+          Already have an account?{" "}
           <Link
-            to="/signup/customer"
+            to="/login"
             className="text-[oklch(0.5393_0.2713_286.7462)] hover:underline"
           >
-            Sign up
+            Sign in
           </Link>
         </p>
       </div>
     </div>
   );
-};
-
-export default Login;
+}

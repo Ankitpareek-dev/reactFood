@@ -30,12 +30,13 @@ const Landing = () => {
               ease. Quality food, right to your doorstep.
             </p>
             <div className="flex justify-center md:justify-start space-x-4">
-              <button
+              <Link
+                to="/signup/customer"
                 className="px-8 py-3 text-lg font-bold rounded-[1.4rem] text-white"
                 style={{ backgroundColor: "oklch(0.5393 0.2713 286.7462)" }}
               >
                 Sign Up
-              </button>
+              </Link>
               <Link
                 to="/login"
                 className="px-8 py-3 text-lg font-bold border rounded-[1.4rem] border-[oklch(0.93_0.0094_286.2156)]"

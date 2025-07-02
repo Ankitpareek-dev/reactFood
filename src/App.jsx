@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Feed from "./components/Feed";
 import RestaurentPage from "./components/RestaurantPage";
+import SignupCustomer from "./components/SignupCustomer";
 
 const Layout = () => {
   return (
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/signup/customer",
+        element: <SignupCustomer />,
       },
       {
         path: "/feed",
