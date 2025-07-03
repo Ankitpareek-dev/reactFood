@@ -2,8 +2,10 @@ import axios from "axios";
 import { useEffect } from "react";
 import { BASE_URL } from "../utils/constants";
 import useUserStore from "../utils/userStore";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const useCheckLoginStatus = () => {
+const useRedirectIfLoggedIn = () => {
+  const navigate = useNavigate();
   const addUser = useUserStore((store) => store.addUser);
   useEffect(() => {
     const checkUserAuth = async () => {
@@ -12,14 +14,14 @@ const useCheckLoginStatus = () => {
           withCredentials: true,
         });
         addUser(res.data);
-        console.log("success");
+        navigate("/feed");
       } catch (err) {
         console.error(err);
-        console.log("failed");
+        navigate("/login");
       }
     };
     checkUserAuth();
   }, []);
 };
 
-export default useCheckLoginStatus;
+export default useRedirectIfLoggedIn;

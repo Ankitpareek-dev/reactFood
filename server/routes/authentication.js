@@ -6,8 +6,8 @@ const CuisineModel = require("../models/Cuisine");
 const auth = require("../middlewares/auth");
 
 //this function will help create jwt token based on the role of the login user
-const createToken = (userId, role) => {
-  return jwt.sign({ id: userId, role }, process.env.JWT_SECRET, {
+const createToken = (userId, role, name) => {
+  return jwt.sign({ userId, role, name }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
 };
@@ -28,7 +28,7 @@ authRouter.post("/signup/customer", async (req, res) => {
   }
 });
 
-authRouter.post("/signup/restaurent", async (req, res) => {
+authRouter.post("/signup/restaurant", async (req, res) => {
   const { name, email, password, cuisines } = req.body;
   const user = new UserModel({
     name,
@@ -54,6 +54,7 @@ authRouter.post("/signup/restaurent", async (req, res) => {
 
     res.send("user created successfully");
   } catch (err) {
+    // res.send(err);
     console.error(err);
   }
 });
@@ -65,14 +66,13 @@ authRouter.post("/login", async (req, res) => {
     if (!user) {
       return res.status(401).send("invalid email or password");
     }
-    const token = createToken(user._id, user.name, user.role);
+    const token = createToken(user._id, user.role, user.name);
     // const isProd = process.env.NODE_ENV === "production";
     res.cookie("token", token, {
       httpOnly: true, // prevents JS access
       sameSite: "lax", // or "none" if cross-origin with HTTPS
       secure: false, // true if using HTTPS (localhost = false)
       maxAge: 86400000, // 1 day
-      path: "/",
     });
     const { name, role } = user;
     res.send({ name: name, role: role });

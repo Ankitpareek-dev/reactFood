@@ -5,12 +5,13 @@ import Login from "./components/Login";
 import Feed from "./components/Feed";
 import RestaurentPage from "./components/RestaurantPage";
 import SignupCustomer from "./components/SignupCustomer";
+import SignupRestaurant from "./components/SignupRestaurant";
 
 const Layout = () => {
   return (
     <>
-      <Navbar />;
-      <Outlet />;
+      <Navbar />
+      <Outlet />
     </>
   );
 };
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/signup/customer",
         element: <SignupCustomer />,
+      },
+      {
+        path: "/signup/restaurant",
+        element: <SignupRestaurant />,
       },
       {
         path: "/feed",
