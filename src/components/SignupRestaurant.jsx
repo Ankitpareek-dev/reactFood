@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { BASE_URL } from "../utils/constants";
+import { useNavigate } from "react-router-dom";
 
 export default function SignupRestaurant() {
   const [restaurant, setRestaurant] = useState({
@@ -10,7 +11,8 @@ export default function SignupRestaurant() {
     password: "",
     cuisines: [],
   });
-  console.log(restaurant);
+
+  const navigate = useNavigate();
   const handleAddCuisine = () => {
     setRestaurant((prev) => ({
       ...prev,
@@ -66,7 +68,7 @@ export default function SignupRestaurant() {
         { withCredentials: true }
       );
 
-      console.log(res);
+      navigate("/feed");
     } catch (err) {
       console.error("Error submitting:", err);
     }

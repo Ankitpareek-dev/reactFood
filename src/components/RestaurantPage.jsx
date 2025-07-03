@@ -37,6 +37,7 @@ export default function RestaurantPage() {
 
   const handleAddToCart = ({ itemName, itemDescription, itemPrice }) => {
     addCart({
+      restaurantId: restaurant._id,
       itemName: itemName,
       itemDescription: itemDescription,
       itemPrice: itemPrice,
