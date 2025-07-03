@@ -57,4 +57,43 @@ orderRouter.get("/orders", auth, async (req, res) => {
   }
 });
 
+orderRouter.patch("/orders/:orderId/status", auth, async (req, res) => {
+  const { orderId } = req.params;
+  const { status } = req.body;
+  const { role, userId } = req.user;
+
+  if (!["pending", "approved", "completed", "cancelled"].includes(status)) {
+    return res.status(400).json({ message: "Invalid status value." });
+  }
+
+  try {
+    const order = await OrderModel.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found." });
+    }
+
+    const isRestaurant =
+      role === "restaurant" && order.restaurantId.toString() === userId;
+    const isCustomer =
+      role === "customer" && order.userId.toString() === userId;
+
+    if (!isRestaurant && !isCustomer) {
+      return res
+        .status(403)
+        .json({ message: "You are not authorized to update this order." });
+    }
+
+    order.status = status;
+    await order.save();
+
+    res.json({ message: "Order status updated.", updatedOrder: order });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ message: "Server error while updating order status." });
+  }
+});
+
 module.exports = orderRouter;

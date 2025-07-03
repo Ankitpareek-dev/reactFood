@@ -16,7 +16,11 @@ const OrderSchema = new mongoose.Schema(
     itemPrice: Number,
     itemQuantity: Number,
     itemDescription: String,
-    status: String,
+    status: {
+      type: String,
+      enum: ["pending", "approved", "completed", "cancelled"],
+      default: "pending",
+    },
   },
   { timestamps: true }
 );
