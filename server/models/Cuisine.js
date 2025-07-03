@@ -11,20 +11,23 @@ const CategorySchema = new mongoose.Schema({
   items: [ItemSchema],
 });
 
-const CuisineSchema = new mongoose.Schema({
-  restaurantId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "UserModel",
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  cuisines: { type: String, required: true },
-  categories: [CategorySchema],
+const CuisineSchema = new mongoose.Schema(
+  {
+    restaurantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserModel",
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    cuisines: { type: String, required: true },
+    categories: [CategorySchema],
 
-  createdAt: { type: Date, default: Date.now },
-});
+    createdAt: { type: Date, default: Date.now },
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("CuisineModel", CuisineSchema);
