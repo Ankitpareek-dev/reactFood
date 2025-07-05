@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import useRestaurantStore from "../utils/restaurantStore";
 import axios from "axios";
 import useCartStore from "../utils/cartStore";
+import useUserStore from "../utils/userStore";
 
 export default function RestaurantPage() {
   const [cuisineData, setCuisineData] = useState([]);
@@ -11,6 +12,7 @@ export default function RestaurantPage() {
   const restaurants = useRestaurantStore((state) => state.restaurants);
 
   const addCart = useCartStore((state) => state.addCart);
+  const user = useUserStore((state) => state.user);
   const { restaurantId } = useParams();
   const restaurant = restaurants.find((r) => r._id === restaurantId);
 
@@ -38,6 +40,7 @@ export default function RestaurantPage() {
   const handleAddToCart = ({ itemName, itemDescription, itemPrice }) => {
     addCart({
       restaurantId: restaurant._id,
+      userId: user.userId,
       itemName: itemName,
       itemDescription: itemDescription,
       itemPrice: itemPrice,

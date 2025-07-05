@@ -6,6 +6,7 @@ import Feed from "./components/Feed";
 import RestaurentPage from "./components/RestaurantPage";
 import SignupCustomer from "./components/SignupCustomer";
 import SignupRestaurant from "./components/SignupRestaurant";
+import YourOrders from "./components/YourOrders";
 
 const Layout = () => {
   return (
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/feed",
         element: <Feed />,
+      },
+      {
+        path: "/yourorders",
+        element: <YourOrders />,
       },
       {
         path: "/feed/view/:restaurantId",

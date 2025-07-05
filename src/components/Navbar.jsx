@@ -18,7 +18,17 @@ const Navbar = () => {
     (acc, item) => acc + item.itemPrice * item.itemQuantity,
     0
   );
-
+  const handlePlaceOrder = async (cart) => {
+    try {
+      const res = await axios.post(BASE_URL + "/order", cart, {
+        withCredentials: true,
+      });
+      alert("order saved ");
+      removeCart();
+    } catch (err) {
+      console.err(err);
+    }
+  };
   const handleLogout = async () => {
     try {
       await axios.post(BASE_URL + "/logout", {}, { withCredentials: true }); // 👈 ensure cookie is sent
@@ -70,7 +80,7 @@ const Navbar = () => {
             {user && (
               <>
                 <Link
-                  to="/orders"
+                  to="/yourorders"
                   className="text-base font-medium"
                   style={{ color: "oklch(0 0 0)" }}
                 >
@@ -184,6 +194,22 @@ const Navbar = () => {
                           }}
                         >
                           Clear Cart
+                        </button>
+                      </div>
+
+                      {/* Place Order Button */}
+                      <div className="border-t px-4 py-3">
+                        <button
+                          onClick={() => {
+                            handlePlaceOrder(cart);
+                          }}
+                          className="text-sm font-medium w-full py-2 rounded-lg"
+                          style={{
+                            backgroundColor: "oklch(0.75 0.15 25)",
+                            color: "oklch(1 0 0)",
+                          }}
+                        >
+                          Place Order
                         </button>
                       </div>
                     </>

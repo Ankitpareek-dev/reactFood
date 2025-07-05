@@ -5,29 +5,31 @@ const auth = require("../middlewares/auth");
 const mongoose = require("mongoose");
 
 orderRouter.post("/order", auth, async (req, res) => {
-  const {
-    restaurantId,
-    itemName,
-    itemPrice,
-    itemDescription,
-    itemQuantity,
-    userId,
-  } = req.body;
-
-  const order = new OrderModel({
-    restaurantId,
-    userId,
-    itemName,
-    itemPrice,
-    itemQuantity,
-    itemDescription,
-    status: "pending",
-  });
   try {
-    await order.save();
-    res.send("successful");
+    let orders = req.body;
+
+    // If it's a single object, wrap in array
+    if (!Array.isArray(orders)) {
+      orders = [orders];
+    }
+
+    // Optional: Validate each order object (basic check)
+    const isValid = orders.every(
+      (order) => order.restaurantId && order.userId && order.itemName
+    );
+    if (!isValid) {
+      return res.status(400).json({ message: "Invalid order data." });
+    }
+
+    const savedOrders = await OrderModel.insertMany(orders);
+
+    res.status(201).json({
+      message: "Orders placed successfully.",
+      orders: savedOrders,
+    });
   } catch (err) {
-    res.status(400).send(err);
+    console.error(err);
+    res.status(500).json({ message: "Server error while placing orders." });
   }
 });
 
