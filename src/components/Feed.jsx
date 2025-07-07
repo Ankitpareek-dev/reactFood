@@ -27,7 +27,7 @@ function Feed() {
   }, []);
   console.log(resData);
   return (
-    <div className="shadow-md border border-gray-200 rounded-[1.4rem] m-auto max-w-7xl grid gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div className="shadow-md border mt-26 border-gray-200 rounded-[1.4rem] m-auto max-w-7xl grid gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {resData.map((r) => (
         <Link key={r._id} to={`/feed/view/${r._id}`}>
           <RestaurantCard data={r} />

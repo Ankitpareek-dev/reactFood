@@ -48,7 +48,7 @@ export default function RestaurantPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 shadow-md rounded-[1.4rem] border border-gray-200">
+    <div className="max-w-7xl mt-24 mx-auto p-6 shadow-md rounded-[1.4rem] border border-gray-200">
       {/* Restaurant Header */}
       <div className="mx-auto max-w-4xl flex flex-col md:flex-row items-center md:items-start gap-6 mb-8 p-6 shadow-md rounded-[1.4rem] border border-gray-200">
         <img

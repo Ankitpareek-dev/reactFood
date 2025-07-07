@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useCartStore from "../utils/cartStore";
-import useUserStore from "../utils/userStore"; // <-- make sure this path is correct
+import useUserStore from "../utils/userStore";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 
@@ -9,7 +9,6 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const cart = useCartStore((state) => state.cart);
   const removeCart = useCartStore((state) => state.removeCart);
-
   const user = useUserStore((state) => state.user);
   const removeUser = useUserStore((state) => state.removeUser);
   const navigate = useNavigate();
@@ -18,20 +17,20 @@ const Navbar = () => {
     (acc, item) => acc + item.itemPrice * item.itemQuantity,
     0
   );
+
   const handlePlaceOrder = async (cart) => {
     try {
-      const res = await axios.post(BASE_URL + "/order", cart, {
-        withCredentials: true,
-      });
-      alert("order saved ");
+      await axios.post(BASE_URL + "/order", cart, { withCredentials: true });
+      alert("order saved");
       removeCart();
     } catch (err) {
-      console.err(err);
+      console.error(err);
     }
   };
+
   const handleLogout = async () => {
     try {
-      await axios.post(BASE_URL + "/logout", {}, { withCredentials: true }); // 👈 ensure cookie is sent
+      await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
       removeUser();
       navigate("/");
     } catch (err) {
@@ -40,9 +39,9 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full flex justify-center px-4 md:px-8 mt-4">
+    <nav className="fixed top-0 left-0 w-full z-50 flex justify-center px-4 md:px-8">
       <div
-        className="w-full max-w-7xl py-3 px-6 rounded-[1.4rem] shadow-md border relative"
+        className="w-full max-w-7xl py-3 px-6 mt-4 rounded-[1.4rem] shadow-md border relative"
         style={{
           backgroundColor: "oklch(0.994 0 0)",
           borderColor: "oklch(0.93 0.0094 286.2156)",
@@ -77,20 +76,27 @@ const Navbar = () => {
             >
               Contact
             </Link>
-            {user && (
-              <>
-                <Link
-                  to="/yourorders"
-                  className="text-base font-medium"
-                  style={{ color: "oklch(0 0 0)" }}
-                >
-                  Your Orders
-                </Link>
-              </>
+            {user?.role === "customer" && (
+              <Link
+                to="/yourorders"
+                className="text-base font-medium"
+                style={{ color: "oklch(0 0 0)" }}
+              >
+                Your Orders
+              </Link>
+            )}
+            {user?.role === "restaurent" && (
+              <Link
+                to="/dashboard"
+                className="text-base font-medium"
+                style={{ color: "oklch(0 0 0)" }}
+              >
+                Dashboard
+              </Link>
             )}
           </div>
 
-          {/* Right Side Controls */}
+          {/* Right Side */}
           <div className="flex items-center gap-6">
             {user && (
               <div className="hidden md:flex flex-col items-end">
@@ -101,9 +107,7 @@ const Navbar = () => {
                   Welcome, {user.name || "User"}
                 </span>
                 <button
-                  onClick={() => {
-                    handleLogout();
-                  }}
+                  onClick={handleLogout}
                   className="text-xs font-medium"
                   style={{ color: "oklch(0.75 0.15 25)" }}
                 >
@@ -175,13 +179,11 @@ const Navbar = () => {
 
                   {cart.length > 0 && (
                     <>
-                      {/* Total */}
                       <div className="border-t px-4 py-3 flex justify-between font-semibold">
                         <span style={{ color: "oklch(0 0 0)" }}>Total</span>
                         <span style={{ color: "oklch(0 0 0)" }}>₹{total}</span>
                       </div>
 
-                      {/* Clear Cart Button */}
                       <div className="border-t px-4 py-3">
                         <button
                           onClick={() => {
@@ -189,20 +191,15 @@ const Navbar = () => {
                             setOpen(false);
                           }}
                           className="text-sm font-medium"
-                          style={{
-                            color: "oklch(0.75 0.15 25)",
-                          }}
+                          style={{ color: "oklch(0.75 0.15 25)" }}
                         >
                           Clear Cart
                         </button>
                       </div>
 
-                      {/* Place Order Button */}
                       <div className="border-t px-4 py-3">
                         <button
-                          onClick={() => {
-                            handlePlaceOrder(cart);
-                          }}
+                          onClick={() => handlePlaceOrder(cart)}
                           className="text-sm font-medium w-full py-2 rounded-lg"
                           style={{
                             backgroundColor: "oklch(0.75 0.15 25)",

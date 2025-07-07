@@ -33,11 +33,13 @@ const Login = () => {
       setIsErrorMessage(false);
       setIsLoading(false);
       addUser(res.data);
+
       // dispatch(addUser(res.data));
       if (res.data.role === "customer") {
         navigate("/feed");
       } else {
-        navigate("/restaurentPanel");
+        console.log(res.data._id);
+        navigate(`/dashboard/${res.data.userId}`);
       }
       // Navigate or store token if needed
     } catch (err) {

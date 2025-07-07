@@ -74,8 +74,8 @@ authRouter.post("/login", async (req, res) => {
       secure: false, // true if using HTTPS (localhost = false)
       maxAge: 86400000, // 1 day
     });
-    const { name, role } = user;
-    res.send({ name: name, role: role });
+    const { name, role, _id } = user;
+    res.send({ name: name, role: role, userId: _id });
   } catch (err) {
     console.error(err.message);
   }

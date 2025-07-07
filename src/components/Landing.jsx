@@ -18,7 +18,7 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen font-sans antialiased" style={containerStyle}>
-      <section className="flex flex-col min-h-screen px-4 py-16">
+      <section className="flex mt-8 flex-col min-h-screen px-4 py-16">
         <div
           className={`flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto gap-12 py-16 px-8 ${cardStyle}`}
         >

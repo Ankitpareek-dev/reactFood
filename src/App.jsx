@@ -7,6 +7,7 @@ import RestaurentPage from "./components/RestaurantPage";
 import SignupCustomer from "./components/SignupCustomer";
 import SignupRestaurant from "./components/SignupRestaurant";
 import YourOrders from "./components/YourOrders";
+import Dashboard from "./components/Dashboard";
 
 const Layout = () => {
   return (
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "/yourorders",
         element: <YourOrders />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
       },
       {
         path: "/feed/view/:restaurantId",
