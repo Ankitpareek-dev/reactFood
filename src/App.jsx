@@ -8,6 +8,7 @@ import SignupCustomer from "./components/SignupCustomer";
 import SignupRestaurant from "./components/SignupRestaurant";
 import YourOrders from "./components/YourOrders";
 import Dashboard from "./components/Dashboard";
+import useCheckLoginStatus from "./hooks/useCheckLoginStatus";
 
 const Layout = () => {
   return (
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
         element: <YourOrders />,
       },
       {
-        path: "/dashboard",
+        path: "/dashboard/:restaurantId",
         element: <Dashboard />,
       },
       {
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  useCheckLoginStatus();
   return <RouterProvider router={router}></RouterProvider>;
 }
 

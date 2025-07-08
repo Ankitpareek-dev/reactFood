@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import useCartStore from "../utils/cartStore";
 import useUserStore from "../utils/userStore";
 import axios from "axios";
@@ -7,6 +7,7 @@ import { BASE_URL } from "../utils/constants";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const cartRef = useRef(null); // 👈 for click outside
   const cart = useCartStore((state) => state.cart);
   const removeCart = useCartStore((state) => state.removeCart);
   const user = useUserStore((state) => state.user);
@@ -38,6 +39,17 @@ const Navbar = () => {
     }
   };
 
+  // ✅ Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (cartRef.current && !cartRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <nav className="fixed top-0 left-0 w-full z-50 flex justify-center px-4 md:px-8">
       <div
@@ -53,7 +65,7 @@ const Navbar = () => {
             🍔 FoodApp
           </div>
 
-          {/* Center Nav Links */}
+          {/* Center Nav */}
           <div className="absolute left-1/2 -translate-x-1/2 hidden md:flex space-x-6">
             <Link
               to="/"
@@ -87,7 +99,7 @@ const Navbar = () => {
             )}
             {user?.role === "restaurent" && (
               <Link
-                to="/dashboard"
+                to={`/dashboard/${user.userId}`}
                 className="text-base font-medium"
                 style={{ color: "oklch(0 0 0)" }}
               >
@@ -98,8 +110,8 @@ const Navbar = () => {
 
           {/* Right Side */}
           <div className="flex items-center gap-6">
-            {user && (
-              <div className="hidden md:flex flex-col items-end">
+            {user ? (
+              <div className="hidden md:flex items-center gap-3">
                 <span
                   className="text-sm font-medium"
                   style={{ color: "oklch(0 0 0)" }}
@@ -108,16 +120,30 @@ const Navbar = () => {
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="text-xs font-medium"
-                  style={{ color: "oklch(0.75 0.15 25)" }}
+                  className="px-4 py-2 rounded-full font-semibold text-sm shadow-sm"
+                  style={{
+                    backgroundColor: "oklch(0.75 0.15 25)",
+                    color: "oklch(1 0 0)",
+                  }}
                 >
                   Logout
                 </button>
               </div>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="hidden md:inline-block px-4 py-2 rounded-full font-semibold text-sm shadow-sm"
+                style={{
+                  backgroundColor: "oklch(0.75 0.15 25)",
+                  color: "oklch(1 0 0)",
+                }}
+              >
+                Login
+              </button>
             )}
 
             {/* Cart Dropdown */}
-            <div className="relative">
+            <div className="relative" ref={cartRef}>
               <button
                 onClick={() => setOpen((prev) => !prev)}
                 className="text-base font-medium"
@@ -128,11 +154,7 @@ const Navbar = () => {
 
               {open && (
                 <div
-                  className={`absolute right-0 mt-2 w-72 rounded-[1rem] shadow-md border z-50 transform transition-all duration-300 ${
-                    open
-                      ? "opacity-100 scale-100 pointer-events-auto"
-                      : "opacity-0 scale-95 pointer-events-none"
-                  }`}
+                  className="absolute right-0 mt-2 w-72 rounded-[1rem] shadow-md border z-50"
                   style={{
                     backgroundColor: "oklch(0.994 0 0)",
                     borderColor: "oklch(0.93 0.0094 286.2156)",

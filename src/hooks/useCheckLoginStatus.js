@@ -5,6 +5,7 @@ import useUserStore from "../utils/userStore";
 
 const useCheckLoginStatus = () => {
   const addUser = useUserStore((store) => store.addUser);
+  const removeUser = useUserStore((store) => store.removeUser);
   useEffect(() => {
     const checkUserAuth = async () => {
       try {
@@ -14,6 +15,7 @@ const useCheckLoginStatus = () => {
         addUser(res.data);
         console.log("success");
       } catch (err) {
+        removeUser();
         console.error(err);
         console.log("failed");
       }
