@@ -37,7 +37,7 @@ feedRouter.get("/dashboard/:restaurantId", auth, async (req, res) => {
 feedRouter.get("/feed", auth, async (req, res) => {
   try {
     const loggedInUser = req.user;
-    const restaurentsData = await UserModel.find({ role: "restaurent" });
+    const restaurentsData = await UserModel.find({ role: "restaurant" });
     const dataWithCuisineTitles = await Promise.all(
       restaurentsData.map(async (resto) => {
         const cuisineDocs = await CuisineModel.find(
