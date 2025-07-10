@@ -174,7 +174,7 @@ export default function Dashboard() {
                       order
                         .filter((o) => o.status === "pending")
                         .reduce((acc, curr) => {
-                          const key = curr.createdAt;
+                          const key = new Date(curr.createdAt).toLocaleString(); // Rounded to second
                           if (!acc[key]) acc[key] = [];
                           acc[key].push(curr);
                           return acc;
@@ -236,9 +236,80 @@ export default function Dashboard() {
             {activeTab === "all" && (
               <div>
                 <h1 className="text-4xl font-extrabold mb-6">All Orders</h1>
-                <p className="text-lg text-gray-700">
-                  Order history and past deliveries.
-                </p>
+                {order.filter((o) => o.status !== "pending").length === 0 ? (
+                  <p className="text-lg text-gray-600">
+                    No completed or cancelled orders.
+                  </p>
+                ) : (
+                  <div className="space-y-6">
+                    {Object.entries(
+                      order
+                        .filter((o) => o.status !== "pending")
+                        .reduce((acc, curr) => {
+                          const key = new Date(curr.createdAt).toLocaleString(); // rounded to seconds
+                          if (!acc[key]) acc[key] = [];
+                          acc[key].push(curr);
+                          return acc;
+                        }, {})
+                    ).map(([createdAt, items]) => (
+                      <div
+                        key={createdAt}
+                        className="p-5 rounded-xl border border-gray-200 shadow bg-white"
+                      >
+                        <div className="flex justify-between mb-3">
+                          <h3 className="text-xl font-semibold text-gray-800">
+                            Order ({items.length} item
+                            {items.length > 1 ? "s" : ""})
+                          </h3>
+                          <span className="text-sm text-gray-500">
+                            {createdAt}
+                          </span>
+                        </div>
+                        <div className="space-y-2">
+                          {items.map((item) => (
+                            <div
+                              key={item._id}
+                              className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
+                            >
+                              <div>
+                                <p className="font-medium text-gray-700">
+                                  {item.itemName}
+                                </p>
+                                <p className="text-sm text-gray-500">
+                                  {item.itemDescription}
+                                </p>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-sm text-gray-600">
+                                  Qty: {item.itemQuantity}
+                                </p>
+                                <p className="text-green-700 font-semibold">
+                                  ₹{item.itemPrice}
+                                </p>
+                                <p
+                                  className={`text-xs font-medium ${
+                                    item.status === "completed"
+                                      ? "text-green-600"
+                                      : "text-red-600"
+                                  }`}
+                                >
+                                  {item.status}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="text-right mt-4 font-bold text-green-800">
+                          Total: ₹
+                          {items.reduce(
+                            (sum, i) => sum + i.itemPrice * i.itemQuantity,
+                            0
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
