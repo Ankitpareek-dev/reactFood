@@ -70,11 +70,11 @@ const Landing = () => {
       <section className="py-20 px-4">
         <div className={`max-w-6xl mx-auto text-center p-8 ${cardStyle}`}>
           <h2 className="text-4xl font-extrabold mb-8">Partner With Us</h2>
-          <pd className="text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
             Are you a restaurant looking to expand your reach and delight more
             customers? Join our platform and let us handle the delivery, so you
             can focus on crafting incredible food.
-          </pd>
+          </p>
           <Link
             to="/signup/restaurant"
             className="px-10 py-4 text-xl font-bold text-white rounded-[1.4rem]"

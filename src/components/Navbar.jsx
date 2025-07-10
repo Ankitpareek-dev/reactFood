@@ -75,19 +75,19 @@ const Navbar = () => {
               Home
             </Link>
             <Link
-              to="/menu"
+              to="/feed"
               className="text-base font-medium"
               style={{ color: "oklch(0 0 0)" }}
             >
-              Menu
+              Feed
             </Link>
-            <Link
+            {/* <Link
               to="/contact"
               className="text-base font-medium"
               style={{ color: "oklch(0 0 0)" }}
             >
               Contact
-            </Link>
+            </Link> */}
             {user?.role === "customer" && (
               <Link
                 to="/yourorders"
@@ -97,7 +97,7 @@ const Navbar = () => {
                 Your Orders
               </Link>
             )}
-            {user?.role === "restaurent" && (
+            {user?.role === "restaurant" && (
               <Link
                 to={`/dashboard/${user.userId}`}
                 className="text-base font-medium"
@@ -143,99 +143,103 @@ const Navbar = () => {
             )}
 
             {/* Cart Dropdown */}
-            <div className="relative" ref={cartRef}>
-              <button
-                onClick={() => setOpen((prev) => !prev)}
-                className="text-base font-medium"
-                style={{ color: "oklch(0 0 0)" }}
-              >
-                🛒 Cart ({cart.length})
-              </button>
-
-              {open && (
-                <div
-                  className="absolute right-0 mt-2 w-72 rounded-[1rem] shadow-md border z-50"
-                  style={{
-                    backgroundColor: "oklch(0.994 0 0)",
-                    borderColor: "oklch(0.93 0.0094 286.2156)",
-                  }}
+            {user?.role === "customer" && (
+              <div className="relative" ref={cartRef}>
+                <button
+                  onClick={() => setOpen((prev) => !prev)}
+                  className="text-base font-medium"
+                  style={{ color: "oklch(0 0 0)" }}
                 >
-                  <div className="max-h-80 overflow-y-auto p-4 space-y-4">
-                    {cart.length === 0 ? (
-                      <p
-                        className="text-sm"
-                        style={{ color: "oklch(0 0 0 / 0.6)" }}
-                      >
-                        Your cart is empty.
-                      </p>
-                    ) : (
-                      cart.map((item, index) => (
-                        <div
-                          key={index}
-                          className="flex justify-between items-start"
+                  🛒 Cart ({cart.length})
+                </button>
+
+                {open && (
+                  <div
+                    className="absolute right-0 mt-2 w-72 rounded-[1rem] shadow-md border z-50"
+                    style={{
+                      backgroundColor: "oklch(0.994 0 0)",
+                      borderColor: "oklch(0.93 0.0094 286.2156)",
+                    }}
+                  >
+                    <div className="max-h-80 overflow-y-auto p-4 space-y-4">
+                      {cart.length === 0 ? (
+                        <p
+                          className="text-sm"
+                          style={{ color: "oklch(0 0 0 / 0.6)" }}
                         >
-                          <div>
+                          Your cart is empty.
+                        </p>
+                      ) : (
+                        cart.map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex justify-between items-start"
+                          >
+                            <div>
+                              <p
+                                className="font-semibold"
+                                style={{ color: "oklch(0 0 0)" }}
+                              >
+                                {item.itemName}
+                              </p>
+                              <p
+                                className="text-sm"
+                                style={{ color: "oklch(0 0 0 / 0.6)" }}
+                              >
+                                {item.itemQuantity} × ₹{item.itemPrice}
+                              </p>
+                            </div>
                             <p
-                              className="font-semibold"
+                              className="text-sm font-medium"
                               style={{ color: "oklch(0 0 0)" }}
                             >
-                              {item.itemName}
-                            </p>
-                            <p
-                              className="text-sm"
-                              style={{ color: "oklch(0 0 0 / 0.6)" }}
-                            >
-                              {item.itemQuantity} × ₹{item.itemPrice}
+                              ₹{item.itemQuantity * item.itemPrice}
                             </p>
                           </div>
-                          <p
-                            className="text-sm font-medium"
-                            style={{ color: "oklch(0 0 0)" }}
-                          >
-                            ₹{item.itemQuantity * item.itemPrice}
-                          </p>
+                        ))
+                      )}
+                    </div>
+
+                    {cart.length > 0 && (
+                      <>
+                        <div className="border-t px-4 py-3 flex justify-between font-semibold">
+                          <span style={{ color: "oklch(0 0 0)" }}>Total</span>
+                          <span style={{ color: "oklch(0 0 0)" }}>
+                            ₹{total}
+                          </span>
                         </div>
-                      ))
+
+                        <div className="border-t px-4 py-3">
+                          <button
+                            onClick={() => {
+                              removeCart();
+                              setOpen(false);
+                            }}
+                            className="text-sm font-medium"
+                            style={{ color: "oklch(0.75 0.15 25)" }}
+                          >
+                            Clear Cart
+                          </button>
+                        </div>
+
+                        <div className="border-t px-4 py-3">
+                          <button
+                            onClick={() => handlePlaceOrder(cart)}
+                            className="text-sm font-medium w-full py-2 rounded-lg"
+                            style={{
+                              backgroundColor: "oklch(0.75 0.15 25)",
+                              color: "oklch(1 0 0)",
+                            }}
+                          >
+                            Place Order
+                          </button>
+                        </div>
+                      </>
                     )}
                   </div>
-
-                  {cart.length > 0 && (
-                    <>
-                      <div className="border-t px-4 py-3 flex justify-between font-semibold">
-                        <span style={{ color: "oklch(0 0 0)" }}>Total</span>
-                        <span style={{ color: "oklch(0 0 0)" }}>₹{total}</span>
-                      </div>
-
-                      <div className="border-t px-4 py-3">
-                        <button
-                          onClick={() => {
-                            removeCart();
-                            setOpen(false);
-                          }}
-                          className="text-sm font-medium"
-                          style={{ color: "oklch(0.75 0.15 25)" }}
-                        >
-                          Clear Cart
-                        </button>
-                      </div>
-
-                      <div className="border-t px-4 py-3">
-                        <button
-                          onClick={() => handlePlaceOrder(cart)}
-                          className="text-sm font-medium w-full py-2 rounded-lg"
-                          style={{
-                            backgroundColor: "oklch(0.75 0.15 25)",
-                            color: "oklch(1 0 0)",
-                          }}
-                        >
-                          Place Order
-                        </button>
-                      </div>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
