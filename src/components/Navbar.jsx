@@ -129,18 +129,7 @@ const Navbar = () => {
                   Logout
                 </button>
               </div>
-            ) : (
-              <button
-                onClick={() => navigate("/login")}
-                className="hidden md:inline-block px-4 py-2 rounded-full font-semibold text-sm shadow-sm"
-                style={{
-                  backgroundColor: "oklch(0.75 0.15 25)",
-                  color: "oklch(1 0 0)",
-                }}
-              >
-                Login
-              </button>
-            )}
+            ) : null}
 
             {/* Cart Dropdown */}
             {user?.role === "customer" && (

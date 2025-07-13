@@ -75,9 +75,9 @@ const Landing = () => {
       </section>
 
       {/* Partner With Us */}
-      <section className="py-24 px-4 bg-white">
+      <section className=" pb-10 px-4 bg-white">
         <div
-          className={`max-w-5xl mx-auto text-center px-6 py-16 ${cardClass}`}
+          className={`max-w-7xl mx-auto text-center px-6 py-16 ${cardClass}`}
         >
           <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight">
             Partner With Us

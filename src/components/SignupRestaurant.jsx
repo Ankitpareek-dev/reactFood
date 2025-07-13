@@ -1,4 +1,3 @@
-// SignupRestaurant.jsx
 import axios from "axios";
 import { useState } from "react";
 import { BASE_URL } from "../utils/constants";
@@ -13,6 +12,7 @@ export default function SignupRestaurant() {
   });
 
   const navigate = useNavigate();
+
   const handleAddCuisine = () => {
     setRestaurant((prev) => ({
       ...prev,
@@ -20,8 +20,11 @@ export default function SignupRestaurant() {
     }));
   };
 
-  const handleChange = (e) => {
-    setRestaurant({ ...restaurant, [e.target.name]: e.target.value });
+  const handleRemoveCuisine = (index) => {
+    setRestaurant((prev) => ({
+      ...prev,
+      cuisines: prev.cuisines.filter((_, i) => i !== index),
+    }));
   };
 
   const handleCuisineChange = (index, value) => {
@@ -33,6 +36,14 @@ export default function SignupRestaurant() {
   const handleAddCategory = (cuisineIndex) => {
     const updated = [...restaurant.cuisines];
     updated[cuisineIndex].categories.push({ heading: "", items: [] });
+    setRestaurant({ ...restaurant, cuisines: updated });
+  };
+
+  const handleRemoveCategory = (cuisineIndex, categoryIndex) => {
+    const updated = [...restaurant.cuisines];
+    updated[cuisineIndex].categories = updated[cuisineIndex].categories.filter(
+      (_, i) => i !== categoryIndex
+    );
     setRestaurant({ ...restaurant, cuisines: updated });
   };
 
@@ -52,6 +63,14 @@ export default function SignupRestaurant() {
     setRestaurant({ ...restaurant, cuisines: updated });
   };
 
+  const handleRemoveItem = (cuisineIndex, categoryIndex, itemIndex) => {
+    const updated = [...restaurant.cuisines];
+    updated[cuisineIndex].categories[categoryIndex].items = updated[
+      cuisineIndex
+    ].categories[categoryIndex].items.filter((_, i) => i !== itemIndex);
+    setRestaurant({ ...restaurant, cuisines: updated });
+  };
+
   const handleItemChange = (ci, catI, itemI, field, value) => {
     const updated = [...restaurant.cuisines];
     updated[ci].categories[catI].items[itemI][field] =
@@ -59,15 +78,16 @@ export default function SignupRestaurant() {
     setRestaurant({ ...restaurant, cuisines: updated });
   };
 
+  const handleChange = (e) => {
+    setRestaurant({ ...restaurant, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        BASE_URL + "/signup/restaurant",
-        restaurant,
-        { withCredentials: true }
-      );
-
+      await axios.post(BASE_URL + "/signup/restaurant", restaurant, {
+        withCredentials: true,
+      });
       navigate("/feed");
     } catch (err) {
       console.error("Error submitting:", err);
@@ -77,85 +97,93 @@ export default function SignupRestaurant() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-6 max-w-5xl mx-auto space-y-10 bg-white shadow-xl rounded-2xl mt-10"
+      className="p-6 mt-20 max-w-lg mx-auto space-y-6 bg-white shadow-lg rounded-2xl"
     >
-      <div className="space-y-4">
-        <h1 className="text-2xl font-bold text-gray-800">
-          Register Restaurant
-        </h1>
-        <input
-          name="name"
-          value={restaurant.name}
-          onChange={handleChange}
-          placeholder="Restaurant Name"
-          className="w-full p-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
-        />
-        <input
-          name="email"
-          value={restaurant.email}
-          onChange={handleChange}
-          placeholder="Email"
-          className="w-full p-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
-        />
-        <input
-          name="password"
-          value={restaurant.password}
-          onChange={handleChange}
-          placeholder="Password"
-          type="password"
-          className="w-full p-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
-        />
-      </div>
+      <h1 className="text-2xl font-semibold text-center text-gray-800">
+        Register Restaurant
+      </h1>
 
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-gray-700">Cuisines</h2>
+      <input
+        name="name"
+        value={restaurant.name}
+        onChange={handleChange}
+        placeholder="Restaurant Name"
+        className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
+      />
+      <input
+        name="email"
+        value={restaurant.email}
+        onChange={handleChange}
+        placeholder="Email"
+        className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
+      />
+      <input
+        name="password"
+        type="password"
+        value={restaurant.password}
+        onChange={handleChange}
+        placeholder="Password"
+        className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
+      />
+
+      <div className="space-y-5">
+        <div className="flex justify-between items-center">
+          <h2 className="text-lg font-medium text-gray-700">Cuisines</h2>
           <button
             type="button"
             onClick={handleAddCuisine}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm"
+            className="text-sm text-orange-500 hover:underline"
           >
             + Add Cuisine
           </button>
         </div>
 
         {restaurant.cuisines.map((cuisine, ci) => (
-          <div key={ci} className="border p-4 rounded-xl bg-gray-50 space-y-4">
-            <input
-              value={cuisine.cuisine}
-              onChange={(e) => handleCuisineChange(ci, e.target.value)}
-              placeholder="Cuisine Type (e.g., Italian)"
-              className="w-full p-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
-            />
-            <button
-              type="button"
-              onClick={() => handleAddCategory(ci)}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-xl text-xs"
-            >
-              + Add Category
-            </button>
+          <div key={ci} className="bg-gray-50 p-4 rounded-xl space-y-4">
+            <div className="flex justify-between items-center">
+              <input
+                value={cuisine.cuisine}
+                onChange={(e) => handleCuisineChange(ci, e.target.value)}
+                placeholder="Cuisine (e.g., Italian)"
+                className="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveCuisine(ci)}
+                className="ml-3 text-xs text-gray-500 hover:underline"
+              >
+                Remove Cuisine
+              </button>
+            </div>
 
             {cuisine.categories.map((cat, catI) => (
-              <div key={catI} className="pl-4 space-y-3">
-                <input
-                  value={cat.heading}
-                  onChange={(e) =>
-                    handleCategoryChange(ci, catI, e.target.value)
-                  }
-                  placeholder="Category Heading"
-                  className="w-full p-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
-                />
-
-                <button
-                  type="button"
-                  onClick={() => handleAddItem(ci, catI)}
-                  className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-xl text-xs"
-                >
-                  + Add Item
-                </button>
+              <div
+                key={catI}
+                className="bg-white p-4 rounded-lg space-y-3 shadow-sm"
+              >
+                <div className="flex justify-between items-center">
+                  <input
+                    value={cat.heading}
+                    onChange={(e) =>
+                      handleCategoryChange(ci, catI, e.target.value)
+                    }
+                    placeholder="Category Heading"
+                    className="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveCategory(ci, catI)}
+                    className="ml-3 text-xs text-gray-500 hover:underline"
+                  >
+                    Remove Category
+                  </button>
+                </div>
 
                 {cat.items.map((item, itemI) => (
-                  <div key={itemI} className="grid grid-cols-3 gap-3">
+                  <div
+                    key={itemI}
+                    className="grid grid-cols-3 gap-2 items-center"
+                  >
                     <input
                       value={item.name}
                       onChange={(e) =>
@@ -168,7 +196,7 @@ export default function SignupRestaurant() {
                         )
                       }
                       placeholder="Item Name"
-                      className="p-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
+                      className="p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
                     />
                     <input
                       value={item.description}
@@ -182,7 +210,7 @@ export default function SignupRestaurant() {
                         )
                       }
                       placeholder="Description"
-                      className="p-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
+                      className="p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
                     />
                     <input
                       type="number"
@@ -197,12 +225,35 @@ export default function SignupRestaurant() {
                         )
                       }
                       placeholder="Price"
-                      className="p-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
+                      className="p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
                     />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveItem(ci, catI, itemI)}
+                      className="col-span-3 text-xs text-gray-500 hover:underline text-right"
+                    >
+                      Remove Item
+                    </button>
                   </div>
                 ))}
+
+                <button
+                  type="button"
+                  onClick={() => handleAddItem(ci, catI)}
+                  className="text-xs text-green-600 hover:underline"
+                >
+                  + Add Item
+                </button>
               </div>
             ))}
+
+            <button
+              type="button"
+              onClick={() => handleAddCategory(ci)}
+              className="text-xs text-blue-600 hover:underline"
+            >
+              + Add Category
+            </button>
           </div>
         ))}
       </div>
@@ -210,7 +261,7 @@ export default function SignupRestaurant() {
       <div className="text-center">
         <button
           type="submit"
-          className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-8 py-3 rounded-2xl text-sm shadow-md"
+          className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-10 py-3 rounded-xl text-sm shadow-md"
         >
           Submit
         </button>
@@ -218,3 +269,4 @@ export default function SignupRestaurant() {
     </form>
   );
 }
+j;
