@@ -21,8 +21,17 @@ const Navbar = () => {
 
   const handlePlaceOrder = async (cart) => {
     try {
-      await axios.post(BASE_URL + "/order", cart, { withCredentials: true });
-      alert("order saved");
+      await axios.post(
+        BASE_URL + "/order",
+        {
+          restaurantId: "6866234e306f0169d25905f0",
+          userId: "685fab53d6d0be0fcc0ee34d",
+          items: cart,
+        },
+        { withCredentials: true }
+      );
+
+      alert("Order saved");
       removeCart();
     } catch (err) {
       console.error(err);

@@ -1,5 +1,12 @@
 const mongoose = require("mongoose");
 
+const ItemSchema = new mongoose.Schema({
+  itemName: String,
+  itemPrice: Number,
+  itemQuantity: Number,
+  itemDescription: String,
+});
+
 const OrderSchema = new mongoose.Schema(
   {
     restaurantId: {
@@ -12,10 +19,7 @@ const OrderSchema = new mongoose.Schema(
       ref: "UserModel",
       required: true,
     },
-    itemName: String,
-    itemPrice: Number,
-    itemQuantity: Number,
-    itemDescription: String,
+    items: [ItemSchema],
     status: {
       type: String,
       enum: ["pending", "approved", "completed", "cancelled"],

@@ -24,6 +24,28 @@ export default function Dashboard() {
 
   const { restaurantId } = useParams();
 
+  const handleStatusChange = async (orderId, newStatus) => {
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/orders/${orderId}/status`,
+        { status: newStatus },
+        { withCredentials: true }
+      );
+
+      if (res.status === 200) {
+        // alert("Status updated successfully");
+        // Refresh orders to reflect the change
+        const updatedOrders = await axios.get("http://localhost:5000/orders", {
+          withCredentials: true,
+        });
+        setOrders(updatedOrders.data);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update status.");
+    }
+  };
+
   useEffect(() => {
     const getRestaurantData = async () => {
       try {
@@ -170,63 +192,68 @@ export default function Dashboard() {
                   <p className="text-lg text-gray-600">No active orders.</p>
                 ) : (
                   <div className="space-y-6">
-                    {Object.entries(
-                      order
-                        .filter((o) => o.status === "pending")
-                        .reduce((acc, curr) => {
-                          const key = new Date(curr.createdAt).toLocaleString(); // Rounded to second
-                          if (!acc[key]) acc[key] = [];
-                          acc[key].push(curr);
-                          return acc;
-                        }, {})
-                    ).map(([createdAt, items]) => (
-                      <div
-                        key={createdAt}
-                        className="p-5 rounded-xl border border-gray-200 shadow bg-white"
-                      >
-                        <div className="flex justify-between mb-3">
-                          <h3 className="text-xl font-semibold text-gray-800">
-                            Order ({items.length} item
-                            {items.length > 1 ? "s" : ""})
-                          </h3>
-                          <span className="text-sm text-gray-500">
-                            {new Date(createdAt).toLocaleString()}
-                          </span>
-                        </div>
-                        <div className="space-y-2">
-                          {items.map((item) => (
-                            <div
-                              key={item._id}
-                              className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
-                            >
-                              <div>
-                                <p className="font-medium text-gray-700">
-                                  {item.itemName}
-                                </p>
-                                <p className="text-sm text-gray-500">
-                                  {item.itemDescription}
-                                </p>
+                    {order
+                      .filter((o) => o.status === "pending")
+                      .map((order) => (
+                        <div
+                          key={order._id}
+                          className="p-5 rounded-xl border border-gray-200 shadow bg-white"
+                        >
+                          <div className="flex justify-between mb-3">
+                            <h3 className="text-xl font-semibold text-gray-800">
+                              Order ({order.items.length} item
+                              {order.items.length > 1 ? "s" : ""})
+                            </h3>
+                            <span className="text-sm text-gray-500">
+                              {new Date(order.createdAt).toLocaleString()}
+                            </span>
+                          </div>
+                          <div className="space-y-2">
+                            {order.items.map((item, index) => (
+                              <div
+                                key={index}
+                                className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
+                              >
+                                <div>
+                                  <p className="font-medium text-gray-700">
+                                    {item.itemName}
+                                  </p>
+                                  <p className="text-sm text-gray-500">
+                                    {item.itemDescription}
+                                  </p>
+                                </div>
+                                <div className="text-right">
+                                  <p className="text-sm text-gray-600">
+                                    Qty: {item.itemQuantity}
+                                  </p>
+                                  <p className="text-green-700 font-semibold">
+                                    ₹{item.itemPrice}
+                                  </p>
+                                </div>
                               </div>
-                              <div className="text-right">
-                                <p className="text-sm text-gray-600">
-                                  Qty: {item.itemQuantity}
-                                </p>
-                                <p className="text-green-700 font-semibold">
-                                  ₹{item.itemPrice}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
+                          <div className="text-right mt-4 font-bold text-green-800">
+                            Total: ₹
+                            {order.items.reduce(
+                              (sum, i) => sum + i.itemPrice * i.itemQuantity,
+                              0
+                            )}
+                          </div>
+                          <select
+                            value={order.status}
+                            onChange={(e) =>
+                              handleStatusChange(order._id, e.target.value)
+                            }
+                            className="border border-gray-300 rounded-lg px-3 py-1 text-gray-700"
+                          >
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                          </select>
                         </div>
-                        <div className="text-right mt-4 font-bold text-green-800">
-                          Total: ₹
-                          {items.reduce(
-                            (sum, i) => sum + i.itemPrice * i.itemQuantity,
-                            0
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 )}
               </div>
@@ -242,72 +269,65 @@ export default function Dashboard() {
                   </p>
                 ) : (
                   <div className="space-y-6">
-                    {Object.entries(
-                      order
-                        .filter((o) => o.status !== "pending")
-                        .reduce((acc, curr) => {
-                          const key = new Date(curr.createdAt).toLocaleString(); // rounded to seconds
-                          if (!acc[key]) acc[key] = [];
-                          acc[key].push(curr);
-                          return acc;
-                        }, {})
-                    ).map(([createdAt, items]) => (
-                      <div
-                        key={createdAt}
-                        className="p-5 rounded-xl border border-gray-200 shadow bg-white"
-                      >
-                        <div className="flex justify-between mb-3">
-                          <h3 className="text-xl font-semibold text-gray-800">
-                            Order ({items.length} item
-                            {items.length > 1 ? "s" : ""})
-                          </h3>
-                          <span className="text-sm text-gray-500">
-                            {createdAt}
-                          </span>
-                        </div>
-                        <div className="space-y-2">
-                          {items.map((item) => (
-                            <div
-                              key={item._id}
-                              className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
-                            >
-                              <div>
-                                <p className="font-medium text-gray-700">
-                                  {item.itemName}
-                                </p>
-                                <p className="text-sm text-gray-500">
-                                  {item.itemDescription}
-                                </p>
+                    {order
+                      .filter((o) => o.status !== "pending")
+                      .map((order) => (
+                        <div
+                          key={order._id}
+                          className="p-5 rounded-xl border border-gray-200 shadow bg-white"
+                        >
+                          <div className="flex justify-between mb-3">
+                            <h3 className="text-xl font-semibold text-gray-800">
+                              Order ({order.items.length} item
+                              {order.items.length > 1 ? "s" : ""})
+                            </h3>
+                            <span className="text-sm text-gray-500">
+                              {new Date(order.createdAt).toLocaleString()}
+                            </span>
+                          </div>
+                          <div className="space-y-2">
+                            {order.items.map((item, index) => (
+                              <div
+                                key={index}
+                                className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
+                              >
+                                <div>
+                                  <p className="font-medium text-gray-700">
+                                    {item.itemName}
+                                  </p>
+                                  <p className="text-sm text-gray-500">
+                                    {item.itemDescription}
+                                  </p>
+                                </div>
+                                <div className="text-right space-y-1">
+                                  <p className="text-sm text-gray-600">
+                                    Qty: {item.itemQuantity}
+                                  </p>
+                                  <p className="text-green-700 font-semibold">
+                                    ₹{item.itemPrice}
+                                  </p>
+                                  <p
+                                    className={`text-xs font-medium ${
+                                      order.status === "completed"
+                                        ? "text-green-600"
+                                        : "text-red-600"
+                                    }`}
+                                  >
+                                    {order.status}
+                                  </p>
+                                </div>
                               </div>
-                              <div className="text-right">
-                                <p className="text-sm text-gray-600">
-                                  Qty: {item.itemQuantity}
-                                </p>
-                                <p className="text-green-700 font-semibold">
-                                  ₹{item.itemPrice}
-                                </p>
-                                <p
-                                  className={`text-xs font-medium ${
-                                    item.status === "completed"
-                                      ? "text-green-600"
-                                      : "text-red-600"
-                                  }`}
-                                >
-                                  {item.status}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
+                          <div className="text-right mt-4 font-bold text-green-800">
+                            Total: ₹
+                            {order.items.reduce(
+                              (sum, i) => sum + i.itemPrice * i.itemQuantity,
+                              0
+                            )}
+                          </div>
                         </div>
-                        <div className="text-right mt-4 font-bold text-green-800">
-                          Total: ₹
-                          {items.reduce(
-                            (sum, i) => sum + i.itemPrice * i.itemQuantity,
-                            0
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 )}
               </div>

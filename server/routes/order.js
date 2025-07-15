@@ -6,26 +6,28 @@ const mongoose = require("mongoose");
 
 orderRouter.post("/order", auth, async (req, res) => {
   try {
-    let orders = req.body;
+    const { restaurantId, userId, items } = req.body;
 
-    // If it's a single object, wrap in array
-    if (!Array.isArray(orders)) {
-      orders = [orders];
-    }
-
-    // Optional: Validate each order object (basic check)
-    const isValid = orders.every(
-      (order) => order.restaurantId && order.userId && order.itemName
-    );
-    if (!isValid) {
+    if (
+      !restaurantId ||
+      !userId ||
+      !Array.isArray(items) ||
+      items.length === 0
+    ) {
       return res.status(400).json({ message: "Invalid order data." });
     }
 
-    const savedOrders = await OrderModel.insertMany(orders);
+    const order = new OrderModel({
+      restaurantId,
+      userId,
+      items,
+    });
+
+    const savedOrder = await order.save();
 
     res.status(201).json({
-      message: "Orders placed successfully.",
-      orders: savedOrders,
+      message: "Order placed successfully.",
+      order: savedOrder,
     });
   } catch (err) {
     console.error(err);
@@ -34,10 +36,10 @@ orderRouter.post("/order", auth, async (req, res) => {
 });
 
 orderRouter.get("/orders", auth, async (req, res) => {
-  const { userId, role } = req.user; // injected from token
+  const { userId, role } = req.user; // from auth middleware
 
   try {
-    let filter = {};
+    const filter = {};
     if (role === "restaurant") {
       filter.restaurantId = userId;
     } else if (role === "customer") {
@@ -46,13 +48,9 @@ orderRouter.get("/orders", auth, async (req, res) => {
       return res.status(403).json({ message: "Invalid role for orders." });
     }
 
-    const orders = await OrderModel.find(filter).sort({ createdAt: -1 });
+    const orders = await OrderModel.find(filter).sort({ createdAt: -1 }).lean(); // faster & safer if you only read data, not mutate
 
-    if (orders.length === 0) {
-      return res.status(404).json({ message: "No orders found." });
-    }
-
-    res.json(orders);
+    res.json(orders); // even if empty, return []
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error while fetching orders." });

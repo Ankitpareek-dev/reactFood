@@ -269,4 +269,3 @@ export default function SignupRestaurant() {
     </form>
   );
 }
-j;
