@@ -9,9 +9,11 @@ export default function SignupRestaurant() {
     email: "",
     password: "",
     cuisines: [],
+    image: "",
   });
 
   const navigate = useNavigate();
+  const [uploading, setUploading] = useState(false);
 
   const handleAddCuisine = () => {
     setRestaurant((prev) => ({
@@ -78,6 +80,26 @@ export default function SignupRestaurant() {
     setRestaurant({ ...restaurant, cuisines: updated });
   };
 
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "restaurant_upload"); // Your unsigned preset here
+
+    try {
+      setUploading(true);
+      const res = await axios.post(
+        "https://api.cloudinary.com/v1_1/dw9ioogav/image/upload",
+        formData
+      );
+      setRestaurant((prev) => ({ ...prev, image: res.data.secure_url }));
+    } catch (err) {
+      console.error("Image upload failed:", err);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleChange = (e) => {
     setRestaurant({ ...restaurant, [e.target.name]: e.target.value });
   };
@@ -125,6 +147,20 @@ export default function SignupRestaurant() {
         placeholder="Password"
         className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
       />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageChange}
+        className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
+      />
+      {uploading && <p className="text-sm text-gray-500">Uploading image...</p>}
+      {restaurant.image && (
+        <img
+          src={restaurant.image}
+          alt="Uploaded Preview"
+          className="w-32 h-32 object-cover rounded-lg mx-auto"
+        />
+      )}
 
       <div className="space-y-5">
         <div className="flex justify-between items-center">
